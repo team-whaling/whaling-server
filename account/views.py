@@ -24,7 +24,7 @@ User = get_user_model()
 class KakaoLoginRedirectTestView(View):
     def get(self, request):
         app_key = env('KAKAO_REST_API_KEY')
-        redirect_uri = 'http://127.0.0.1:8000/auth/kakao/login/callback'
+        redirect_uri = 'http://127.0.0.1:8000/account/auth/kakao/callback'
         base_url = 'https://kauth.kakao.com/oauth/authorize?response_type=code'
         return HttpResponseRedirect(f'{base_url}&client_id={app_key}&redirect_uri={redirect_uri}')
 
@@ -40,13 +40,13 @@ class KakaoLoginRequestTestView(generics.GenericAPIView):
 
         # 사용자 인증 API에 POST 요청
         auth_code = request.GET.get('code', None)
-        redirect_uri = 'http://127.0.0.1:8000/auth/kakao/login/callback'
-        uri = 'http://127.0.0.1:8000/auth/login'
+        redirect_uri = 'http://127.0.0.1:8000/account/auth/kakao/callback'
+        uri = 'http://127.0.0.1:8000/account/auth'
         data = {
             'code': auth_code,
             'redirect_uri': redirect_uri
         }
-        response = requests.post(uri, data=data)
+        # response = requests.post(uri, data=data)
         return Response(data)
 
 
