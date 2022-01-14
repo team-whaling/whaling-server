@@ -36,6 +36,13 @@ class Vote(TimeStampedModel):
         related_name='created_votes',
         related_query_name='created_vote'
     )
+    participants = models.ManyToManyField(
+        User,
+        verbose_name='투표에 참여한 유저들',
+        related_name='participated_votes',
+        related_query_name='participated_vote',
+        through='Choice'
+    )
 
     # 투표 상태 정보
     state = models.IntegerField('투표 상태', choices=StateOfVote.choices, default=StateOfVote.ONGOING)
@@ -81,9 +88,8 @@ class Vote(TimeStampedModel):
 
 
 class Choice(TimeStampedModel):
-    '''
-    choice_id
-    choice
-    is_answer
-    '''
-    pass
+    choice_id = models.IntegerField('투표 행위 ID', primary_key=True)
+    vote = models.ForeignKey(Vote, on_delete=models.CASCADE)
+    participant = models.ForeignKey(User, on_delete=models.CASCADE)
+    choice = models.BooleanField('유저의 선택')  # BooleanField VS. IntegerField(choices)
+    is_answer = models.BooleanField('유저의 정답 여부', null=True)
