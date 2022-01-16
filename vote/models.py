@@ -55,7 +55,6 @@ class Vote(TimeStampedModel):
     spent_point = models.IntegerField('투표 참여 시 차감되는 고래밥', default=10)
     earned_point = models.IntegerField('정답 적중 시 지급되는 고래밥', default=20)
     is_answer = models.BooleanField('투표 결과 적중 여부', null=True)  # 전체 유저 투표 결과와 실제 가격 변동의 일치 여부
-    is_admin_vote = models.BooleanField('운영자 투표 여부', default=False)
 
     # 투표 질문
     duration = models.CharField(
