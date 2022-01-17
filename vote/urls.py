@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from .views import *
 
 vote_router = DefaultRouter()
-vote_router.register(r'votes', VoteViewSet)
+vote_router.register(r'votes', VoteViewSet, basename='vote')
 
 choice_router = DefaultRouter()
 choice_router.register(r'choices', ChoiceViewSet)

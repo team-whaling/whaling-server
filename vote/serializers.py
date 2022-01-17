@@ -7,11 +7,6 @@ from rest_framework import serializers
 from .models import *
 
 
-class CurrentUserIdDefault(serializers.CurrentUserDefault):
-    def __call__(self, serializer_field):
-        return serializer_field.context['request'].user.user_id
-
-
 def get_current_time():
     return datetime.now(pytz.timezone('Asia/Seoul')).replace(microsecond=0, second=0)
 
@@ -29,7 +24,7 @@ class ChoiceSerializer(serializers.ModelSerializer):
         return data
 
 
-class VoteSerializer(serializers.ModelSerializer):
+class VoteCreateSerializer(serializers.ModelSerializer):
     is_admin_vote = serializers.SerializerMethodField(label='운영자 투표 여부', read_only=True, method_name='get_admin_vote')
     uploader = serializers.HiddenField(label='투표를 생성한 유저', default=serializers.CurrentUserDefault())
 
@@ -37,6 +32,7 @@ class VoteSerializer(serializers.ModelSerializer):
         model = Vote
         exclude = ['participants']
         read_only_fields = [
+            'state',
             'finished_at',
             'tracked_at',
             'created_price',
@@ -69,7 +65,25 @@ class VoteSerializer(serializers.ModelSerializer):
         validated_data['finished_at'] = current_time + delta_finish
         validated_data['tracked_at'] = current_time + delta_track
 
-        # 아직 코인 서버 연결 X
+        # 코인 서버 연결
         validated_data['created_price'] = 1000
 
         return super().create(validated_data)
+
+
+class VoteListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = [
+            'vote_id',
+            # 'coin',
+            'participants',
+            'state',
+            'finished_at',
+            'earned_point',
+            'duration',
+            'range',
+            'comment',
+            'total_participants',
+        ]
+
