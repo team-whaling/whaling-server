@@ -1,13 +1,14 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 
 from .serializers import VoteCreateSerializer, VoteListSerializer, VoteDetailSerializer, ChoiceSerializer
 from .models import Vote, Choice
 
 
-class VoteViewSet(viewsets.GenericViewSet):
+class VoteViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     queryset = Vote.objects.all()
+    serializer_class = VoteCreateSerializer
 
     def list(self, request):
         queryset = self.get_queryset()

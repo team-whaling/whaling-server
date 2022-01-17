@@ -25,29 +25,30 @@ class ChoiceSerializer(serializers.ModelSerializer):
 
 
 class VoteCreateSerializer(serializers.ModelSerializer):
-    is_admin_vote = serializers.SerializerMethodField(label='운영자 투표 여부', read_only=True, method_name='get_admin_vote')
     uploader = serializers.HiddenField(label='투표를 생성한 유저', default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Vote
-        exclude = ['participants']
-        read_only_fields = [
-            'state',
+        fields = [
+            'vote_id',
+            'uploader',
+            # 'coin',
             'finished_at',
             'tracked_at',
             'created_price',
-            'finished_price',
             'spent_point',
             'earned_point',
-            'is_answer',
-            'pos_participants',
-            'neg_participants',
-            'pos_whales',
-            'neg_whales',
+            'duration',
+            'range',
+            'comment',
         ]
-
-    def get_admin_vote(self, obj):
-        return obj.uploader.is_staff
+        read_only_fields = [
+            'finished_at',
+            'tracked_at',
+            'created_price',
+            'spent_point',
+            'earned_point',
+        ]
 
     def create(self, validated_data):
         # 투표 종료 시점, 트래킹 시점 설정
@@ -67,6 +68,11 @@ class VoteCreateSerializer(serializers.ModelSerializer):
 
         # 코인 서버 연결
         validated_data['created_price'] = 1000
+
+        # 지급/차감 고래밥 개수 설정
+        if self.context['request'].user.is_staff:
+            validated_data['spent_point'] = 0
+            validated_data['earned_point'] = 30
 
         return super().create(validated_data)
 
