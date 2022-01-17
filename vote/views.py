@@ -1,13 +1,13 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from .serializers import VoteCreateSerializer, VoteListSerializer, ChoiceSerializer
+from .serializers import VoteCreateSerializer, VoteListSerializer, VoteDetailSerializer, ChoiceSerializer
 from .models import Vote, Choice
 
 
-class VoteViewSet(viewsets.ViewSet):
-    def get_queryset(self):
-        return Vote.objects.all()
+class VoteViewSet(viewsets.GenericViewSet):
+    queryset = Vote.objects.all()
 
     def list(self, request):
         queryset = self.get_queryset()
@@ -19,6 +19,12 @@ class VoteViewSet(viewsets.ViewSet):
             else:
                 voted = False
             data['voted'] = voted
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = self.get_queryset()
+        vote = get_object_or_404(queryset, pk=pk)
+        serializer = VoteDetailSerializer(vote, context={'request': request})
         return Response(serializer.data)
 
 
