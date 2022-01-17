@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     'account.apps.AccountConfig',
+    'vote.apps.VoteConfig',
 ]
 
 MIDDLEWARE = [
