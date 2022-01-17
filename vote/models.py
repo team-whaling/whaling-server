@@ -70,6 +70,7 @@ class Vote(TimeStampedModel):
     )
 
     # 유저들의 투표 현황
+    total_participants = models.IntegerField('투표 참가자 수', default=0)
     pos_participants = models.IntegerField('\'예\'를 선택한 유저 수', default=0)
     neg_participants = models.IntegerField('\'아니오\'를 선택한 유저 수', default=0)
     pos_whales = models.IntegerField('\'예\'를 선택한 웨일 수', default=0)
