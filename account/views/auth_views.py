@@ -1,20 +1,17 @@
 import json
-
-import environ
 import requests
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseRedirect
 from django.views import View
-from rest_framework import viewsets, status, generics
+from rest_framework import status, generics
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializers import UserSerializer
+from whaling.settings import env
 
-env = environ.Env()
-environ.Env.read_env()
+from account.serializers import UserSerializer
 
 User = get_user_model()
 
@@ -24,7 +21,7 @@ User = get_user_model()
 class KakaoLoginRedirectTestView(View):
     def get(self, request):
         app_key = env('KAKAO_REST_API_KEY')
-        redirect_uri = 'http://127.0.0.1:8000/account/auth/kakao/callback'
+        redirect_uri = 'http://127.0.0.1:8000/auth/kakao/callback'
         base_url = 'https://kauth.kakao.com/oauth/authorize?response_type=code'
         return HttpResponseRedirect(f'{base_url}&client_id={app_key}&redirect_uri={redirect_uri}')
 
@@ -40,8 +37,8 @@ class KakaoLoginRequestTestView(generics.GenericAPIView):
 
         # 사용자 인증 API에 POST 요청
         auth_code = request.GET.get('code', None)
-        redirect_uri = 'http://127.0.0.1:8000/account/auth/kakao/callback'
-        uri = 'http://127.0.0.1:8000/account/auth'
+        redirect_uri = 'http://127.0.0.1:8000/auth/kakao/callback'
+        uri = 'http://127.0.0.1:8000/auth'
         data = {
             'code': auth_code,
             'redirect_uri': redirect_uri
@@ -122,8 +119,3 @@ def kakao_login(request):
         'token': get_tokens_for_user(user)
     }
     return Response(response, status=http_status)
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
