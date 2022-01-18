@@ -107,7 +107,7 @@ class VoteDetailSerializer(serializers.ModelSerializer):
         return obj.uploader.is_staff
 
     def get_choice(self, obj):
-        user = self.context.get("request").user
+        user = self.context.get('user')
         try:
             choice_data = Choice.objects.get(vote_id=obj.vote_id, participant_id=user.user_id)
             return choice_data.choice

@@ -25,7 +25,7 @@ class VoteViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     def retrieve(self, request, pk=None):
         queryset = self.get_queryset()
         vote = get_object_or_404(queryset, pk=pk)
-        serializer = VoteDetailSerializer(vote, context={'request': request})
+        serializer = VoteDetailSerializer(vote, context={'user': request.user})
         return Response(serializer.data)
 
 
