@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 from rest_framework import serializers
 
 from vote.models import Vote, Choice, Coin
+from .coin_serializers import CoinSerializer
 
 COIN_SERVER_API = 'http://ec2-54-180-155-20.ap-northeast-2.compute.amazonaws.com/coins'
 
@@ -73,11 +74,13 @@ class VoteCreateSerializer(serializers.ModelSerializer):
 
 
 class VoteListSerializer(serializers.ModelSerializer):
+    coin = CoinSerializer()
+
     class Meta:
         model = Vote
         fields = [
             'vote_id',
-            # 'coin',
+            'coin',
             'participants',
             'state',
             'finished_at',
@@ -90,6 +93,7 @@ class VoteListSerializer(serializers.ModelSerializer):
 
 
 class VoteDetailSerializer(serializers.ModelSerializer):
+    coin = CoinSerializer()
     is_admin_vote = serializers.SerializerMethodField(label='운영자 투표 여부', read_only=True,
                                                       method_name='get_admin_vote')
     choice = serializers.SerializerMethodField(allow_null=True)

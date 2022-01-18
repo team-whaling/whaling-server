@@ -6,4 +6,4 @@ from vote.models import Coin
 class CoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coin
-        exclude = ['coin_krname']
+        exclude = ['coin_name']
