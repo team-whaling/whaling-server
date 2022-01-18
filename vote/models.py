@@ -1,6 +1,12 @@
+from account.models import TimeStampedModel, User
 from django.db import models
 
-from account.models import TimeStampedModel, User
+
+class Coin(models.Model):  # 이건 TimeStamp 필요없어서 그냥 이렇게 해놨어
+    coin_code = models.CharField(primary_key=True)
+    coin_name = models.CharField('코인 한글 이름')
+    coin_fullname = models.CharField('코인 한글과 티커 합친 이름')
+    coin_image = models.URLField('코인 이미지 링크')
 
 
 class Vote(TimeStampedModel):
