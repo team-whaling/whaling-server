@@ -11,3 +11,8 @@ class VoteAdmin(admin.ModelAdmin):
 @admin.register(models.Choice)
 class ChoiceAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.Coin)
+class ChoiceAdmin(admin.ModelAdmin):
+    pass
