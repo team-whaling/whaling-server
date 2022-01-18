@@ -2,7 +2,7 @@ from account.models import TimeStampedModel, User
 from django.db import models
 
 
-class Coin(models.Model):  # 이건 TimeStamp 필요없어서 그냥 이렇게 해놨어
+class Coin(models.Model):
     coin_code = models.CharField(primary_key=True, max_length=10)
     coin_krname = models.CharField('코인 한글 이름', max_length=12)
     coin_name = models.CharField('코인 한글과 티커 합친 이름', max_length=30)
@@ -41,16 +41,11 @@ class Vote(TimeStampedModel):
         related_query_name='participated_vote',
         through='Choice'
     )
-    """
-    아직 코인 서버 연결 X
     coin = models.ForeignKey(
-        'Coin', 
-        on_delete=models.CASCADE, 
-        verbose_name='코인의 코드',
-        related_name='',
-        related_query_name=''
+        Coin,
+        on_delete=models.CASCADE,
+        verbose_name='투표를 생성할 코인의 종류'
     )
-    """
 
     # 투표 상태 정보
     state = models.IntegerField('투표 상태', choices=StateOfVote.choices, default=StateOfVote.ONGOING)
