@@ -1,38 +1,38 @@
-from datetime import datetime, timedelta
-
+import requests
 import pytz
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from rest_framework import serializers
 
-from .models import *
+from vote.models import Vote, Choice
+from .coin_serializers import CoinSerializer
+
+COIN_SERVER_API = 'http://ec2-54-180-155-20.ap-northeast-2.compute.amazonaws.com/coins'
 
 
+# 현재 코인 가격을 반환하는 함수
+# ticker: 코인 코드(ex. BTC, ETH)
+def get_coin_cur_price(ticker):
+    params = {'coin_code': ticker}
+    response = requests.get(COIN_SERVER_API, params=params).json()
+    return response[0]['cur_price']
+
+
+# 현재 시각을 반환하는 함수
 def get_current_time():
     return datetime.now(pytz.timezone('Asia/Seoul')).replace(microsecond=0, second=0)
 
 
-class ChoiceSerializer(serializers.ModelSerializer):
-    participant = serializers.HiddenField(label='투표에 참여한 유저', default=serializers.CurrentUserDefault())
-
-    class Meta:
-        model = Choice
-        fields = '__all__'
-
-    def validate(self, data):
-        if self.context['request'].user == data['vote'].uploader:
-            raise serializers.ValidationError({'participant': '투표 생성자는 투표에 참여할 수 없습니다.'})
-        return data
-
-
 class VoteCreateSerializer(serializers.ModelSerializer):
     uploader = serializers.HiddenField(label='투표를 생성한 유저', default=serializers.CurrentUserDefault())
+    coin = CoinSerializer()
 
     class Meta:
         model = Vote
         fields = [
             'vote_id',
             'uploader',
-            # 'coin',
+            'coin',
             'finished_at',
             'tracked_at',
             'created_price',
@@ -67,7 +67,7 @@ class VoteCreateSerializer(serializers.ModelSerializer):
         validated_data['tracked_at'] = current_time + delta_track
 
         # 코인 서버 연결
-        validated_data['created_price'] = 1000
+        validated_data['created_price'] = get_coin_cur_price('')
 
         # 지급/차감 고래밥 개수 설정
         if self.context['request'].user.is_staff:
