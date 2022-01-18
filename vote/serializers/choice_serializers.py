@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 
 from vote.models import Choice
 
@@ -8,9 +9,20 @@ class ChoiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Choice
-        fields = '__all__'
+        fields = [
+            'vote',
+            'participant',
+            'choice'
+        ]
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Choice.objects.all(),
+                fields=['vote', 'participant'],
+                message='이미 참여한 투표입니다.'
+            )
+        ]
 
     def validate(self, data):
-        if self.context['request'].user == data['vote'].uploader:
+        if data['participant'] == data['vote'].uploader:
             raise serializers.ValidationError({'participant': '투표 생성자는 투표에 참여할 수 없습니다.'})
         return data

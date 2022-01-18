@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from .serializers import coin_serializers, vote_serializers, choice_serializers
 from .models import Vote, Choice, Coin
@@ -34,6 +35,18 @@ class VoteViewSet(viewsets.GenericViewSet):
         vote = serializer.save()
         response = {
             'vote_id': vote.vote_id
+        }
+        return Response(response)
+
+    @action(detail=True, methods=['post'])
+    def choice(self, request, pk=None):
+        request.data['vote'] = pk
+        serializer = choice_serializers.ChoiceSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        choice_obj = serializer.save()
+        response = {
+            'vote_id': choice_obj.vote_id,
+            'choice': choice_obj.choice
         }
         return Response(response)
 
