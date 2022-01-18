@@ -11,7 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from whaling.settings import env
 
-from account.serializers import UserSerializer
+from account.serializers import UserAuthSerializer
 
 User = get_user_model()
 
@@ -88,29 +88,32 @@ def kakao_login(request):
     kakao_api_response = requests.post(kakao_api_url, headers=headers).json()
     user_id = kakao_api_response.get('id')
 
-    # 카카오 API 응답에 에러가 있다면
+    # 카카오 API 응답에 에러가 있다면 에러 리턴
     if user_id is None:
         return Response(kakao_api_response, status=status.HTTP_400_BAD_REQUEST)
 
+    user_profile = kakao_api_response.get('kakao_account').get('profile')
+    user_data = {
+        'user_id': user_id,
+        'nickname': f'user{user_id}',
+        'profile_img': user_profile.get('profile_image_url'),
+        'is_default_profile': user_profile.get('is_default_image')
+    }
+
     try:
-        # 기존에 가입한 유저인 경우, 유저 정보를 불러옴
+        # 기존에 가입한 유저인 경우, 유저 업데이트
         user = User.objects.get(user_id=user_id)
-        http_status = status.HTTP_201_CREATED
+        user_data['nickname'] = user.nickname
+        serializer = UserAuthSerializer(user, data=user_data)
+        http_status = status.HTTP_200_OK
     except User.DoesNotExist:
-        # 새로 가입하는 유저인 경우, 유저를 새로 생성함
-        user_profile = kakao_api_response.get('kakao_account').get('profile')
-        user_data = {
-            'user_id': user_id,
-            'nickname': f'user{user_id}',
-            'profile_img': user_profile.get('profile_image_url'),
-            'is_default_profile': user_profile.get('is_default_image')
-        }
-        serializer = UserSerializer(data=user_data)
-        if not serializer.is_valid(raise_exception=True):
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        user = serializer.save()
+        # 새로 가입하는 유저인 경우, 유저 생성
+        serializer = UserAuthSerializer(data=user_data)
         http_status = status.HTTP_201_CREATED
 
+    serializer.is_valid(raise_exception=True)
+    user = serializer.save()
+    
     # 유저 정보 및 JWT 응답
     response = {
         'user': {
