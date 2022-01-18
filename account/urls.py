@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 from .views import auth_views, user_views
 
 router = DefaultRouter()
-router.register(r'users', user_views.UserViewSet)
+router.register(r'user', user_views.UserViewSet, basename='user')
 
 urlpatterns = [
     # 로그인/회원가입
