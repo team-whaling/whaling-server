@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-from .serializers import coin_serializers, vote_serializers, choice_serializers
-from .models import Vote, Choice, Coin
+from .serializers import vote_serializers, choice_serializers
+from .models import Vote, Choice
 
 
 class VoteViewSet(viewsets.GenericViewSet):
@@ -62,13 +62,3 @@ class VoteViewSet(viewsets.GenericViewSet):
             'choice': choice_obj.choice
         }
         return Response(data)
-
-
-# class VoteModelViewSet(viewsets.ModelViewSet):
-#     serializer_class = VoteCreateSerializer
-#     queryset = Vote.objects.all()
-
-
-class ChoiceViewSet(viewsets.ModelViewSet):
-    serializer_class = choice_serializers.ChoiceSerializer
-    queryset = Choice.objects.all()
