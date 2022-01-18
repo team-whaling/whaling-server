@@ -96,7 +96,6 @@ class VoteDetailSerializer(serializers.ModelSerializer):
     coin = CoinSerializer()
     is_admin_vote = serializers.SerializerMethodField(label='운영자 투표 여부', read_only=True,
                                                       method_name='get_admin_vote')
-    choice = serializers.SerializerMethodField(allow_null=True)
 
     class Meta:
         model = Vote
@@ -104,11 +103,3 @@ class VoteDetailSerializer(serializers.ModelSerializer):
 
     def get_admin_vote(self, obj):
         return obj.uploader.is_staff
-
-    def get_choice(self, obj):
-        user = self.context.get('user')
-        try:
-            choice_data = Choice.objects.get(vote_id=obj.vote_id, participant_id=user.user_id)
-            return choice_data.choice
-        except Choice.DoesNotExist:
-            return None

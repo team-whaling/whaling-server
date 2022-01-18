@@ -20,23 +20,36 @@ class VoteViewSet(viewsets.GenericViewSet):
                 voted = True
             else:
                 voted = False
-            data['voted'] = voted
+            data['user'] = {
+                'voted': voted
+            }
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         queryset = self.get_queryset()
         vote = get_object_or_404(queryset, pk=pk)
-        serializer = vote_serializers.VoteDetailSerializer(vote, context={'user': request.user})
-        return Response(serializer.data)
+        serializer = vote_serializers.VoteDetailSerializer(vote)
+        data = serializer.data
+        try:
+            choice_obj = Choice.objects.get(vote_id=pk, participant_id=request.user.user_id)
+            choice = choice_obj.choice
+            is_answer = choice_obj.is_answer
+        except Choice.DoesNotExist:
+            choice = is_answer = None
+        data['user'] = {
+            'choice': choice,
+            'is_answer': is_answer
+        }
+        return Response(data)
 
     def create(self, request):
         serializer = vote_serializers.VoteCreateSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         vote = serializer.save()
-        response = {
+        data = {
             'vote_id': vote.vote_id
         }
-        return Response(response)
+        return Response(data)
 
     @action(detail=True, methods=['post'])
     def choice(self, request, pk=None):
@@ -44,11 +57,11 @@ class VoteViewSet(viewsets.GenericViewSet):
         serializer = choice_serializers.ChoiceSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         choice_obj = serializer.save()
-        response = {
+        data = {
             'vote_id': choice_obj.vote_id,
             'choice': choice_obj.choice
         }
-        return Response(response)
+        return Response(data)
 
 
 # class VoteModelViewSet(viewsets.ModelViewSet):
