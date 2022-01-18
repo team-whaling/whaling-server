@@ -4,8 +4,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from rest_framework import serializers
 
-from vote.models import Vote, Choice
-from .coin_serializers import CoinSerializer
+from vote.models import Vote, Choice, Coin
 
 COIN_SERVER_API = 'http://ec2-54-180-155-20.ap-northeast-2.compute.amazonaws.com/coins'
 
@@ -25,30 +24,25 @@ def get_current_time():
 
 class VoteCreateSerializer(serializers.ModelSerializer):
     uploader = serializers.HiddenField(label='투표를 생성한 유저', default=serializers.CurrentUserDefault())
-    coin = CoinSerializer()
+    coin_code = serializers.CharField()
 
     class Meta:
         model = Vote
         fields = [
             'vote_id',
             'uploader',
-            'coin',
-            'finished_at',
-            'tracked_at',
-            'created_price',
-            'spent_point',
-            'earned_point',
+            'coin_code',
             'duration',
             'range',
             'comment',
         ]
-        read_only_fields = [
-            'finished_at',
-            'tracked_at',
-            'created_price',
-            'spent_point',
-            'earned_point',
-        ]
+
+    def validate(self, data):
+        try:
+            data['coin'] = Coin.objects.get(pk=data['coin_code'])
+        except Coin.DoesNotExist:
+            raise serializers.ValidationError({'coin_code': '지원하지 않는 코인입니다.'})
+        return data
 
     def create(self, validated_data):
         # 투표 종료 시점, 트래킹 시점 설정
@@ -66,8 +60,9 @@ class VoteCreateSerializer(serializers.ModelSerializer):
         validated_data['finished_at'] = current_time + delta_finish
         validated_data['tracked_at'] = current_time + delta_track
 
-        # 코인 서버 연결
-        validated_data['created_price'] = get_coin_cur_price('')
+        # 코인 정보 추가
+        coin_code = validated_data.pop('coin_code')
+        validated_data['created_price'] = get_coin_cur_price(coin_code)
 
         # 지급/차감 고래밥 개수 설정
         if self.context['request'].user.is_staff:
