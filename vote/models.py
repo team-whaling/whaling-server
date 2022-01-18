@@ -78,12 +78,8 @@ class Vote(TimeStampedModel):
 
 
 class Choice(TimeStampedModel):
-    class CaseOfChoice(models.IntegerChoices):
-        YES = 1
-        NO = 2
-
     choice_id = models.BigAutoField('투표 행위 ID', primary_key=True)
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE)
     participant = models.ForeignKey(User, on_delete=models.CASCADE)
-    choice = models.IntegerField('유저의 선택', choices=CaseOfChoice.choices)
+    choice = models.BooleanField('유저의 선택')
     is_answer = models.BooleanField('유저의 정답 여부', null=True)
