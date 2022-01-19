@@ -10,11 +10,10 @@ class Coin(models.Model):
 
 
 class Vote(TimeStampedModel):
-    # Enum class : IntegerChoices VS. TextChoices
-    class StateOfVote(models.IntegerChoices):
-        ONGOING = (1, '진행 중인 투표')
-        FINISHED = (2, '완료된 투표')
-        TRACKED = (3, '트래킹된 투표')
+    class StateOfVote(models.TextChoices):
+        ONGOING = ('ongoing', '진행 중인 투표')
+        FINISHED = ('finished', '완료된 투표')
+        TRACKED = ('tracked', '트래킹된 투표')
 
     class DurationOfQuestion(models.TextChoices):
         DAY = ('day', '1일 후')
@@ -41,7 +40,6 @@ class Vote(TimeStampedModel):
         related_query_name='participated_vote',
         through='Choice'
     )
-    
     coin = models.ForeignKey(
         Coin,
         on_delete=models.CASCADE,
@@ -80,8 +78,12 @@ class Vote(TimeStampedModel):
 
 
 class Choice(TimeStampedModel):
+    class ChoiceOfVote(models.IntegerChoices):
+        YES = (1, 'yes')
+        NO = (2, 'no')
+
     choice_id = models.BigAutoField('투표 행위 ID', primary_key=True)
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE)
     participant = models.ForeignKey(User, on_delete=models.CASCADE)
-    choice = models.BooleanField('유저의 선택')
+    choice = models.IntegerField('유저의 선택', choices=ChoiceOfVote.choices, null=True)
     is_answer = models.BooleanField('유저의 정답 여부', null=True)
