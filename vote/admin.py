@@ -6,7 +6,7 @@ from vote import models
 @admin.register(models.Vote)
 class VoteAdmin(admin.ModelAdmin):
     list_display = ['vote_id', 'coin', 'state', 'duration', 'range', 'comment', 'created_price', 'finished_price',
-                    'finished_at',
+                    'created_at', 'finished_at',
                     'tracked_at', 'is_answer']
     list_display_links = ['vote_id', 'state', 'created_price', 'finished_price', 'finished_at', 'tracked_at']
 

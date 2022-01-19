@@ -43,7 +43,7 @@ class Vote(TimeStampedModel):
     coin = models.ForeignKey(
         Coin,
         on_delete=models.CASCADE,
-        verbose_name='투표를 생성할 코인의 종류'
+        verbose_name='코인의 종류'
     )
 
     # 투표 상태 정보
