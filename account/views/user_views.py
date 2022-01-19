@@ -28,9 +28,20 @@ class UserViewSet(viewsets.ViewSet):
         queryset = request.user.created_votes.all()
         ongoing_count = queryset.filter(state=Vote.StateOfVote.ONGOING).count()
         finished_count = queryset.filter(Q(state=Vote.StateOfVote.FINISHED) | Q(state=Vote.StateOfVote.TRACKED)).count()
-        serializer = vote_serializers.VoteListSerializer(queryset, many=True)
-        for data in serializer.data:
-            del data['participants']
+        serializer = vote_serializers.MyPageVoteSerializer(queryset, many=True)
+        data = {
+            'ongoing_count': ongoing_count,
+            'finished_count': finished_count,
+            'votes': serializer.data
+        }
+        return Response(data)
+
+    @action(methods=['get'], detail=False, url_path='participated-votes')
+    def participated_votes(self, request):
+        queryset = request.user.participated_votes.all()
+        ongoing_count = queryset.filter(state=Vote.StateOfVote.ONGOING).count()
+        finished_count = queryset.filter(Q(state=Vote.StateOfVote.FINISHED) | Q(state=Vote.StateOfVote.TRACKED)).count()
+        serializer = vote_serializers.MyPageVoteSerializer(queryset, many=True)
         data = {
             'ongoing_count': ongoing_count,
             'finished_count': finished_count,

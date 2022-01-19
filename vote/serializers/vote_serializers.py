@@ -4,23 +4,62 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from rest_framework import serializers
 
-from vote.models import Vote, Choice, Coin
+from vote.models import Vote, Coin
 from .coin_serializers import CoinSerializer
-
-COIN_SERVER_API = 'http://ec2-54-180-155-20.ap-northeast-2.compute.amazonaws.com/coins'
+from whaling.settings import env
 
 
 # 현재 코인 가격을 반환하는 함수
 # ticker: 코인 코드(ex. BTC, ETH)
 def get_coin_cur_price(ticker):
     params = {'coin_code': ticker}
-    response = requests.get(COIN_SERVER_API, params=params).json()
+    response = requests.get(env('COIN_SERVER_API'), params=params).json()
     return response[0]['cur_price']
 
 
 # 현재 시각을 반환하는 함수
 def get_current_time():
     return datetime.now(pytz.timezone('Asia/Seoul')).replace(microsecond=0, second=0)
+
+
+class VoteListSerializer(serializers.ModelSerializer):
+    coin = CoinSerializer()
+
+    class Meta:
+        model = Vote
+        fields = [
+            'vote_id',
+            'coin',
+            'participants',
+            'state',
+            'created_at',
+            'finished_at',
+            'earned_point',
+            'duration',
+            'range',
+            'comment',
+            'total_participants',
+        ]
+
+
+class MyPageVoteSerializer(VoteListSerializer):
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data.pop('participants')
+        return data
+
+
+class VoteDetailSerializer(serializers.ModelSerializer):
+    coin = CoinSerializer()
+    is_admin_vote = serializers.SerializerMethodField(label='운영자 투표 여부', read_only=True,
+                                                      method_name='get_admin_vote')
+
+    class Meta:
+        model = Vote
+        exclude = ['participants']
+
+    def get_admin_vote(self, obj):
+        return obj.uploader.is_staff
 
 
 class VoteCreateSerializer(serializers.ModelSerializer):
@@ -71,35 +110,3 @@ class VoteCreateSerializer(serializers.ModelSerializer):
             validated_data['earned_point'] = 30
 
         return super().create(validated_data)
-
-
-class VoteListSerializer(serializers.ModelSerializer):
-    coin = CoinSerializer()
-
-    class Meta:
-        model = Vote
-        fields = [
-            'vote_id',
-            'coin',
-            'participants',
-            'state',
-            'finished_at',
-            'earned_point',
-            'duration',
-            'range',
-            'comment',
-            'total_participants',
-        ]
-
-
-class VoteDetailSerializer(serializers.ModelSerializer):
-    coin = CoinSerializer()
-    is_admin_vote = serializers.SerializerMethodField(label='운영자 투표 여부', read_only=True,
-                                                      method_name='get_admin_vote')
-
-    class Meta:
-        model = Vote
-        exclude = ['participants']
-
-    def get_admin_vote(self, obj):
-        return obj.uploader.is_staff
