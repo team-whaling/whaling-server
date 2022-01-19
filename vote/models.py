@@ -47,7 +47,7 @@ class Vote(TimeStampedModel):
     )
 
     # 투표 상태 정보
-    state = models.IntegerField('투표 상태', choices=StateOfVote.choices, default=StateOfVote.ONGOING)
+    state = models.CharField('투표 상태', choices=StateOfVote.choices, default=StateOfVote.ONGOING, max_length=10)
     finished_at = models.DateTimeField('투표가 종료되는 시점')
     tracked_at = models.DateTimeField('투표가 트래킹되는 시점')
     created_price = models.IntegerField('투표 생성 시점의 코인 가격')
