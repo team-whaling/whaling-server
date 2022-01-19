@@ -41,6 +41,7 @@ class Vote(TimeStampedModel):
         related_query_name='participated_vote',
         through='Choice'
     )
+    
     coin = models.ForeignKey(
         Coin,
         on_delete=models.CASCADE,
