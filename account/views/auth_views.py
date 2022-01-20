@@ -1,20 +1,17 @@
 import json
-
-import environ
 import requests
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseRedirect
 from django.views import View
-from rest_framework import viewsets, status, generics
+from rest_framework import status, generics
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializers import UserSerializer
+from whaling.settings import env
 
-env = environ.Env()
-environ.Env.read_env()
+from account.serializers import UserAuthSerializer
 
 User = get_user_model()
 
@@ -24,7 +21,7 @@ User = get_user_model()
 class KakaoLoginRedirectTestView(View):
     def get(self, request):
         app_key = env('KAKAO_REST_API_KEY')
-        redirect_uri = 'http://127.0.0.1:8000/account/auth/kakao/callback'
+        redirect_uri = 'http://127.0.0.1:8000/auth/kakao/callback'
         base_url = 'https://kauth.kakao.com/oauth/authorize?response_type=code'
         return HttpResponseRedirect(f'{base_url}&client_id={app_key}&redirect_uri={redirect_uri}')
 
@@ -40,8 +37,8 @@ class KakaoLoginRequestTestView(generics.GenericAPIView):
 
         # 사용자 인증 API에 POST 요청
         auth_code = request.GET.get('code', None)
-        redirect_uri = 'http://127.0.0.1:8000/account/auth/kakao/callback'
-        uri = 'http://127.0.0.1:8000/account/auth'
+        redirect_uri = 'http://127.0.0.1:8000/auth/kakao/callback'
+        uri = 'http://127.0.0.1:8000/auth'
         data = {
             'code': auth_code,
             'redirect_uri': redirect_uri
@@ -91,29 +88,32 @@ def kakao_login(request):
     kakao_api_response = requests.post(kakao_api_url, headers=headers).json()
     user_id = kakao_api_response.get('id')
 
-    # 카카오 API 응답에 에러가 있다면
+    # 카카오 API 응답에 에러가 있다면 에러 리턴
     if user_id is None:
         return Response(kakao_api_response, status=status.HTTP_400_BAD_REQUEST)
 
+    user_profile = kakao_api_response.get('kakao_account').get('profile')
+    user_data = {
+        'user_id': user_id,
+        'nickname': f'user{user_id}',
+        'profile_img': user_profile.get('profile_image_url'),
+        'is_default_profile': user_profile.get('is_default_image')
+    }
+
     try:
-        # 기존에 가입한 유저인 경우, 유저 정보를 불러옴
+        # 기존에 가입한 유저인 경우, 유저 업데이트
         user = User.objects.get(user_id=user_id)
-        http_status = status.HTTP_201_CREATED
+        user_data['nickname'] = user.nickname
+        serializer = UserAuthSerializer(user, data=user_data)
+        http_status = status.HTTP_200_OK
     except User.DoesNotExist:
-        # 새로 가입하는 유저인 경우, 유저를 새로 생성함
-        user_profile = kakao_api_response.get('kakao_account').get('profile')
-        user_data = {
-            'user_id': user_id,
-            'nickname': f'user{user_id}',
-            'profile_img': user_profile.get('profile_image_url'),
-            'is_default_profile': user_profile.get('is_default_image')
-        }
-        serializer = UserSerializer(data=user_data)
-        if not serializer.is_valid(raise_exception=True):
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        user = serializer.save()
+        # 새로 가입하는 유저인 경우, 유저 생성
+        serializer = UserAuthSerializer(data=user_data)
         http_status = status.HTTP_201_CREATED
 
+    serializer.is_valid(raise_exception=True)
+    user = serializer.save()
+    
     # 유저 정보 및 JWT 응답
     response = {
         'user': {
@@ -122,8 +122,3 @@ def kakao_login(request):
         'token': get_tokens_for_user(user)
     }
     return Response(response, status=http_status)
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
