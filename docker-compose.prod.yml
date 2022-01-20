@@ -26,6 +26,7 @@ services:
     volumes:
       - static:/home/app/web/static
       - media:/home/app/web/media
+      - /etc/letsencrypt/live/whaling.co.kr:/etc/letsencrypt/live/whaling.co.kr
     ports:
       - "80:80"
     depends_on:
