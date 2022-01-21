@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action, api_view
 
@@ -18,13 +18,13 @@ class VoteViewSet(viewsets.GenericViewSet):
             many=True,
             context={'user': request.user}
         )
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, pk=None):
         queryset = self.get_queryset()
         vote = get_object_or_404(queryset, pk=pk)
         serializer = vote_serializers.VoteDetailSerializer(vote, context={'user': request.user})
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         serializer = self.get_serializer(data=request.data, context={'request': request})
@@ -33,7 +33,7 @@ class VoteViewSet(viewsets.GenericViewSet):
         data = {
             'vote_id': vote.vote_id
         }
-        return Response(data)
+        return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'])
     def choice(self, request, pk=None):
@@ -41,7 +41,7 @@ class VoteViewSet(viewsets.GenericViewSet):
         serializer = choice_serializers.ChoiceSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET'])
@@ -52,4 +52,4 @@ def acc_percent_of_whaling(request):
     data = {
         'acc_percent': acc_percent
     }
-    return Response(data)
+    return Response(data, status=status.HTTP_200_OK)

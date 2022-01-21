@@ -14,7 +14,7 @@ User = get_user_model()
 class UserViewSet(viewsets.ViewSet):
     def list(self, request):
         serializer = UserSerializer(request.user)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(methods=['patch'], detail=False)
     def nickname(self, request):
@@ -34,7 +34,7 @@ class UserViewSet(viewsets.ViewSet):
             'finished_count': finished_count,
             'votes': serializer.data
         }
-        return Response(data)
+        return Response(data, status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=False, url_path='participated-votes')
     def participated_votes(self, request):
@@ -47,4 +47,4 @@ class UserViewSet(viewsets.ViewSet):
             'finished_count': finished_count,
             'votes': serializer.data
         }
-        return Response(data)
+        return Response(data, status=status.HTTP_200_OK)
