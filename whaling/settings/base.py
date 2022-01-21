@@ -79,6 +79,7 @@ TEMPLATES = [
 ]
 
 CSRF_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = ['https://*.whaling.co.kr']
 SESSION_COOKIE_SECURE = False
 
 WSGI_APPLICATION = 'whaling.wsgi.application'
