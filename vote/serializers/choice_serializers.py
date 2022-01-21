@@ -26,3 +26,10 @@ class ChoiceSerializer(serializers.ModelSerializer):
         if data['participant'] == data['vote'].uploader:
             raise serializers.ValidationError({'participant': '투표 생성자는 투표에 참여할 수 없습니다.'})
         return data
+
+    def to_representation(self, instance):
+        data = {
+            'vote_id': instance.vote_id,
+            'choice': instance.choice
+        }
+        return data
