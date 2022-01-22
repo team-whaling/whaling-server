@@ -27,6 +27,25 @@ class ChoiceSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'participant': '투표 생성자는 투표에 참여할 수 없습니다.'})
         return data
 
+    def create(self, validated_data):
+        vote = validated_data['vote']
+        is_whale = (validated_data['participant'].acc_percent >= 70)
+        choice = validated_data['choice']
+
+        # 투표 참여자 수 증가
+        vote.total_participants += 1
+        if choice == Choice.ChoiceOfVote.YES:
+            vote.pos_participants += 1
+            if is_whale:
+                vote.pos_whales += 1
+        else:
+            vote.neg_participants += 1
+            if is_whale:
+                vote.neg_whales += 1
+
+        vote.save()
+        return super().create(validated_data)
+
     def to_representation(self, instance):
         data = {
             'vote_id': instance.vote_id,
