@@ -1,10 +1,18 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, status
-from rest_framework.response import Response
+from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action, api_view
+from rest_framework.response import Response
 
-from .serializers import vote_serializers, choice_serializers
-from .models import Vote
+from .models import Vote, Coin
+from .serializers import vote_serializers, choice_serializers, coin_serializers
+
+
+class CoinView(generics.ListAPIView):
+    serializer_class = coin_serializers
+
+    def get_queryset(self):
+        quaryset = Coin.objects.all()
+        return quaryset
 
 
 class VoteViewSet(viewsets.GenericViewSet):
