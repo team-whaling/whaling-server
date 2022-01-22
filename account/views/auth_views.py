@@ -13,6 +13,9 @@ from whaling.settings import env
 
 from account.serializers import UserAuthSerializer
 
+base_uri = 'https://whaling.co.kr/auth'
+redirect_uri = base_uri + '/kakao/callback'
+
 User = get_user_model()
 
 
@@ -21,7 +24,6 @@ User = get_user_model()
 class KakaoLoginRedirectTestView(View):
     def get(self, request):
         app_key = env('KAKAO_REST_API_KEY')
-        redirect_uri = 'http://127.0.0.1:8000/auth/kakao/callback'
         base_url = 'https://kauth.kakao.com/oauth/authorize?response_type=code'
         return HttpResponseRedirect(f'{base_url}&client_id={app_key}&redirect_uri={redirect_uri}')
 
@@ -37,8 +39,6 @@ class KakaoLoginRequestTestView(generics.GenericAPIView):
 
         # 사용자 인증 API에 POST 요청
         auth_code = request.GET.get('code', None)
-        redirect_uri = 'http://127.0.0.1:8000/auth/kakao/callback'
-        uri = 'http://127.0.0.1:8000/auth'
         data = {
             'code': auth_code,
             'redirect_uri': redirect_uri
@@ -92,13 +92,15 @@ def kakao_login(request):
     if user_id is None:
         return Response(kakao_api_response, status=status.HTTP_400_BAD_REQUEST)
 
-    user_profile = kakao_api_response.get('kakao_account').get('profile')
     user_data = {
         'user_id': user_id,
-        'nickname': f'user{user_id}',
-        'profile_img': user_profile.get('profile_image_url'),
-        'is_default_profile': user_profile.get('is_default_image')
+        'nickname': f'user{user_id}'
     }
+    # 프로필 이미지 접근에 동의한 유저의 정보만 저장
+    user_profile = kakao_api_response.get('kakao_account').get('profile', None)
+    if user_profile is not None:
+        user_data['profile_img'] = user_profile.get('profile_image_url')
+        user_data['is_default_profile'] = user_profile.get('is_default_image')
 
     try:
         # 기존에 가입한 유저인 경우, 유저 업데이트
@@ -113,7 +115,7 @@ def kakao_login(request):
 
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
-    
+
     # 유저 정보 및 JWT 응답
     response = {
         'user': {

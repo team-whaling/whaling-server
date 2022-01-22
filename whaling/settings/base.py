@@ -78,6 +78,10 @@ TEMPLATES = [
     },
 ]
 
+CSRF_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = ['https://*.whaling.co.kr']
+SESSION_COOKIE_SECURE = False
+
 WSGI_APPLICATION = 'whaling.wsgi.application'
 
 # Password validation
@@ -91,8 +95,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
     ),
 }
 
@@ -105,21 +108,6 @@ SIMPLE_JWT = {
 
     'USER_ID_FIELD': 'user_id',
 }
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
