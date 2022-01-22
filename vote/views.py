@@ -48,8 +48,8 @@ class VoteViewSet(viewsets.GenericViewSet):
 def acc_percent_of_whaling(request):
     total_votes = Vote.objects.all().count()
     correct_votes = Vote.objects.filter(is_answer=True).count()
-    acc_percent = correct_votes / total_votes
+    acc_percent = (correct_votes / total_votes) * 100
     data = {
-        'acc_percent': acc_percent
+        'acc_percent': format(acc_percent, '.1f')
     }
     return Response(data, status=status.HTTP_200_OK)
