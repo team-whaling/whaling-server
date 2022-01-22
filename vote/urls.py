@@ -10,6 +10,5 @@ urlpatterns = [
     # 웨일링 적중률
     path('acc-percent', acc_percent_of_whaling),
     # 투표
-    path('', include(vote_router.urls)),
-    # 코인 목록
+    path('', include(vote_router.urls))
 ]
