@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
-from rest_framework.response import Response
 from rest_framework.decorators import action, api_view
+from rest_framework.response import Response
 
+from .models import Vote, Coin
 from .serializers import vote_serializers, choice_serializers
-from .models import Vote
 
 
 class VoteViewSet(viewsets.GenericViewSet):
@@ -48,8 +48,13 @@ class VoteViewSet(viewsets.GenericViewSet):
 def acc_percent_of_whaling(request):
     total_votes = Vote.objects.all().count()
     correct_votes = Vote.objects.filter(is_answer=True).count()
-    acc_percent = correct_votes / total_votes
+    acc_percent = (correct_votes / total_votes) * 100
     data = {
-        'acc_percent': acc_percent
+        'acc_percent': format(acc_percent, '.1f')
     }
     return Response(data, status=status.HTTP_200_OK)
+
+
+class CoinViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Coin.objects.all()
+    serializer_class = vote_serializers.CoinSerializer

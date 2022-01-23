@@ -62,7 +62,7 @@ class Vote(TimeStampedModel):
         max_length=10,
         choices=DurationOfQuestion.choices,
     )
-    range = models.IntegerField('예상 변동폭')
+    range = models.PositiveIntegerField('예상 변동폭')
     comment = models.CharField(
         '예상 추이',
         max_length=10,

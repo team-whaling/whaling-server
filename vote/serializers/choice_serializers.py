@@ -1,3 +1,5 @@
+from functools import partial
+
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
@@ -23,9 +25,35 @@ class ChoiceSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, data):
-        if data['participant'] == data['vote'].uploader:
-            raise serializers.ValidationError({'participant': '투표 생성자는 투표에 참여할 수 없습니다.'})
+        vote = data['vote']
+        participant = data['participant']
+
+        if participant.point < vote.spent_point:
+            raise serializers.ValidationError({'participant': '고래밥이 부족합니다.'})
         return data
+
+    def create(self, validated_data):
+        vote = validated_data['vote']
+        participant = validated_data['participant']
+        is_whale = (participant.acc_percent >= 70)
+        choice = validated_data['choice']
+
+        # 투표 참여자 수 증가
+        vote.total_participants += 1
+        if choice == Choice.ChoiceOfVote.YES:
+            vote.pos_participants += 1
+            if is_whale:
+                vote.pos_whales += 1
+        else:
+            vote.neg_participants += 1
+            if is_whale:
+                vote.neg_whales += 1
+        vote.save()
+
+        # 유저 고래밥 차감
+        participant.point -= vote.spent_point
+        participant.save()
+        return super().create(validated_data)
 
     def to_representation(self, instance):
         data = {
