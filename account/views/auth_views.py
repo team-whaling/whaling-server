@@ -77,6 +77,8 @@ def kakao_login(request):
     # 카카오로부터 액세스 토큰 받기
     kakao_token_response = requests.post(kakao_token_url, headers=headers, data=data).json()
     access_token = kakao_token_response.get('access_token')
+    if access_token is None:
+        return Response(kakao_token_response, status=status.HTTP_400_BAD_REQUEST)
 
     # 사용자 정보 접근용 Request
     kakao_api_url = 'https://kapi.kakao.com/v2/user/me'
@@ -87,8 +89,6 @@ def kakao_login(request):
     # 카카오로부터 사용자 정보 받기
     kakao_api_response = requests.post(kakao_api_url, headers=headers).json()
     user_id = kakao_api_response.get('id')
-
-    # 카카오 API 응답에 에러가 있다면 에러 리턴
     if user_id is None:
         return Response(kakao_api_response, status=status.HTTP_400_BAD_REQUEST)
 
