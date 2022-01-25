@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters, permissions
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 
@@ -58,3 +58,6 @@ def acc_percent_of_whaling(request):
 class CoinViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Coin.objects.all()
     serializer_class = vote_serializers.CoinSerializer
+    permission_classes = [permissions.AllowAny]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['^code', '^krname']
