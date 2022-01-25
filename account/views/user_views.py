@@ -23,13 +23,8 @@ class UserViewSet(viewsets.ViewSet):
         return Response(status=status.HTTP_200_OK)
 
     def list_my_page_votes(self, queryset, params):
-        # 상태별 투표 개수 계산
         ongoing_votes = queryset.filter(state=Vote.StateOfVote.ONGOING)
         finished_votes = queryset.exclude(state=Vote.StateOfVote.ONGOING)
-        count = {
-            'ongoing': ongoing_votes.count(),
-            'finished': finished_votes.count()
-        }
 
         # 파라미터에 따라 상태별 투표 목록 필터링
         state = params.get('state', None)
@@ -40,7 +35,8 @@ class UserViewSet(viewsets.ViewSet):
 
         serializer = vote_serializers.MyPageVoteSerializer(queryset, many=True)
         data = {
-            'count': count,
+            'ongoing_count': ongoing_votes.count(),
+            'finished_count': finished_votes.count(),
             'votes': serializer.data
         }
         return data
