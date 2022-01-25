@@ -23,10 +23,10 @@ services:
   react:
     container_name: react
     build:
-      context: ./config/react
+      context: ./frontend
       dockerfile: Dockerfile
     volumes:
-      - ./frontend:/app
+      - ./:/app
       - /app/node_modules
     environment:
       - NODE_ENV=devlopment
