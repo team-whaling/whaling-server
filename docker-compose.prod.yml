@@ -33,6 +33,7 @@ services:
     ports:
       - "3000:3000"
     stdin_open: true
+    restart: always
 
   nginx:
     container_name: nginx
