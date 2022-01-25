@@ -1,9 +1,7 @@
 import json
 import requests
 from django.contrib.auth import get_user_model
-from django.http import HttpResponseRedirect
-from django.views import View
-from rest_framework import status, generics
+from rest_framework import status
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -13,38 +11,7 @@ from whaling.settings import env
 
 from account.serializers import UserAuthSerializer
 
-base_uri = 'https://whaling.co.kr/auth'
-redirect_uri = base_uri + '/kakao/callback'
-
 User = get_user_model()
-
-
-# 카카오 로그인 테스트용 리다이렉트 뷰
-@permission_classes([AllowAny])
-class KakaoLoginRedirectTestView(View):
-    def get(self, request):
-        app_key = env('KAKAO_REST_API_KEY')
-        base_url = 'https://kauth.kakao.com/oauth/authorize?response_type=code'
-        return HttpResponseRedirect(f'{base_url}&client_id={app_key}&redirect_uri={redirect_uri}')
-
-
-# 카카오 로그인 테스트용 리퀘스트 뷰
-@permission_classes([AllowAny])
-class KakaoLoginRequestTestView(generics.GenericAPIView):
-    def get(self, request):
-        # 인가 코드 에러 처리
-        error_desc = request.GET.get('error_description', None)
-        if error_desc is not None:
-            return Response(error_desc, status=status.HTTP_400_BAD_REQUEST)
-
-        # 사용자 인증 API에 POST 요청
-        auth_code = request.GET.get('code', None)
-        data = {
-            'code': auth_code,
-            'redirect_uri': redirect_uri
-        }
-        # response = requests.post(uri, data=data)
-        return Response(data)
 
 
 # JWT 발급 함수

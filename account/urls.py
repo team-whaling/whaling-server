@@ -15,7 +15,4 @@ urlpatterns = [
     path('auth/token/verify', TokenVerifyView.as_view()),
     # 유저
     path('', include(router.urls)),
-    # 테스트용
-    path('auth/kakao', auth_views.KakaoLoginRedirectTestView.as_view()),
-    path('auth/kakao/callback', auth_views.KakaoLoginRequestTestView.as_view()),
 ]
