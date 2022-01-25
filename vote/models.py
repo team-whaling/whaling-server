@@ -1,5 +1,8 @@
-from account.models import TimeStampedModel, User
+from django.contrib.auth import get_user_model
+from account.models import TimeStampedModel
 from django.db import models
+
+User = get_user_model()
 
 
 class Coin(models.Model):
