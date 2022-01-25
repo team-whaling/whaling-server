@@ -20,6 +20,19 @@ services:
       - sh
       - config/docker/entrypoint.prod.sh
 
+  react:
+    container_name: react
+    build:
+      context: ./config/react
+      dockerfile: Dockerfile
+    volumes:
+      - /frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=devlopment
+    ports:
+      - "3000:3000"
+    stdin_open: true
 
   nginx:
     container_name: nginx
@@ -27,13 +40,12 @@ services:
     volumes:
       - static:/home/app/web/static
       - media:/home/app/web/media
-      - /etc/letsencrypt/archive/whaling.co.kr:/etc/nginx/conf.d/certificate
     ports:
       - "80:80"
       - "443:443"
     depends_on:
       - web
-
+      - react
 
 volumes:
   static:
