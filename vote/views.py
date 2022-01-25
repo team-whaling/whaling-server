@@ -9,7 +9,7 @@ from .serializers import vote_serializers, choice_serializers
 
 
 class VoteViewSet(viewsets.GenericViewSet):
-    queryset = Vote.objects.all()
+    queryset = Vote.objects.exclude(state=Vote.StateOfVote.TRACKED)
     serializer_class = vote_serializers.VoteCreateSerializer
 
     def get_filtered_queryset(self, params):
