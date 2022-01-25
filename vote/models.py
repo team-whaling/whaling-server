@@ -10,6 +10,9 @@ class Coin(models.Model):
 
 
 class Vote(TimeStampedModel):
+    class Meta:
+        ordering = ['-created_at']
+
     class StateOfVote(models.TextChoices):
         ONGOING = ('ongoing', '진행 중인 투표')
         FINISHED = ('finished', '완료된 투표')

@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 from rest_framework import viewsets, status, filters, permissions
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
@@ -11,8 +12,21 @@ class VoteViewSet(viewsets.GenericViewSet):
     queryset = Vote.objects.all()
     serializer_class = vote_serializers.VoteCreateSerializer
 
-    def list(self, request):
+    def get_filtered_queryset(self, params):
         queryset = self.get_queryset()
+        state = params.get('state', None)
+        sort = params.get('sort', None)
+        coin = params.get('coin', None)
+        if state in Vote.StateOfVote:
+            queryset = queryset.filter(state=state)
+        if sort == 'popular':
+            queryset = queryset.order_by('-total_participants')
+        if coin is not None:
+            queryset = queryset.filter(Q(coin__code__icontains=coin) | Q(coin__krname__icontains=coin))
+        return queryset
+
+    def list(self, request):
+        queryset = self.get_filtered_queryset(request.query_params)
         serializer = vote_serializers.VoteListSerializer(
             queryset,
             many=True,
@@ -60,4 +74,4 @@ class CoinViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = vote_serializers.CoinSerializer
     permission_classes = [permissions.AllowAny]
     filter_backends = [filters.SearchFilter]
-    search_fields = ['^code', '^krname']
+    search_fields = ['code', 'krname']
