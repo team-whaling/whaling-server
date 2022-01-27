@@ -25,13 +25,14 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    command: sh -c "npm run build && npm run start"
     volumes:
       - ./frontend/:/app
       - /app/node_modules
     environment:
       - NODE_ENV=devlopment
-    ports:
-      - "3000:3000"
+    expose:
+      - 3000
     stdin_open: true
     restart: always
 
@@ -41,11 +42,13 @@ services:
     volumes:
       - static:/home/app/web/static
       - media:/home/app/web/media
+      - ./frontend:/root
     ports:
       - "80:80"
       - "443:443"
     depends_on:
       - web
+      - react
 
 volumes:
   static:
