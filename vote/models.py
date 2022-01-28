@@ -1,5 +1,8 @@
-from account.models import TimeStampedModel, User
+from django.contrib.auth import get_user_model
+from account.models import TimeStampedModel
 from django.db import models
+
+User = get_user_model()
 
 
 class Coin(models.Model):
@@ -10,6 +13,9 @@ class Coin(models.Model):
 
 
 class Vote(TimeStampedModel):
+    class Meta:
+        ordering = ['-created_at']
+
     class StateOfVote(models.TextChoices):
         ONGOING = ('ongoing', '진행 중인 투표')
         FINISHED = ('finished', '완료된 투표')

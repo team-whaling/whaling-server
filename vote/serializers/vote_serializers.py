@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from rest_framework import serializers
 
 from vote.models import Vote, Coin, Choice
-from vote.serializers.coin_serializers import CoinSerializer
+from vote.serializers import CoinSerializer
 from whaling.settings import env
 
 

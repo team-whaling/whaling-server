@@ -1,6 +1,9 @@
-from rest_framework import serializers
+from email._header_value_parser import get_address
 
-from .models import User
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class UserAuthSerializer(serializers.ModelSerializer):
