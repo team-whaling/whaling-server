@@ -1,8 +1,5 @@
 import json
-
-import pytz
 import requests
-from datetime import datetime
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import permission_classes, api_view, action
@@ -24,11 +21,8 @@ User = get_user_model()
 # JWT 발급 함수
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
-    expiration_time = datetime.now(pytz.timezone('Asia/Seoul')). \
-                          replace(tzinfo=None) + api_settings.ACCESS_TOKEN_LIFETIME
 
     return {
-        'expiration_time': expiration_time,
         'access_token': str(refresh.access_token),
         'refresh_token': str(refresh)
     }
