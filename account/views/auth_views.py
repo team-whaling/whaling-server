@@ -8,8 +8,11 @@ from rest_framework import status
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework_simplejwt.serializers import TokenVerifySerializer
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.views import TokenViewBase
 
 from whaling.settings import env
 
@@ -98,3 +101,23 @@ def kakao_login(request):
         'token': get_tokens_for_user(user)
     }
     return Response(response, status=http_status)
+
+
+class TokenVerifyView(TokenViewBase):
+    serializer_class = TokenVerifySerializer
+
+    def post(self, request, *args, **kwargs):
+        jwt = JWTAuthentication()
+        header = jwt.get_header(request)
+        if header is None:
+            return Response({'message': '헤더에 토큰이 없습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+        data = {
+            'token': str(jwt.get_raw_token(header), 'utf-8')
+        }
+        serializer = self.get_serializer(data=data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except:
+            return Response({'message': '만료된 혹은 유효하지 않은 토큰입니다.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        return Response(status=status.HTTP_200_OK)

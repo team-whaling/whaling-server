@@ -1,8 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
+from rest_framework_simplejwt.views import TokenRefreshView
 
-from account.views import kakao_login, UserViewSet
+from account.views import UserViewSet, kakao_login, TokenVerifyView
 
 router = DefaultRouter()
 router.register(r'user', UserViewSet, basename='user')
