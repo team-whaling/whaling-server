@@ -31,8 +31,8 @@ services:
       - ./frontend/:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=devlopment
-      - TZ: "Asia/Seoul"
+      TZ: "Asia/Seoul"
+      NODE_ENV=devlopment
     expose:
       - 3000
     stdin_open: true
@@ -46,7 +46,7 @@ services:
       - media:/home/app/web/media
       - ./frontend:/root
     environment:
-      - TZ: "Asia/Seoul"
+      TZ: "Asia/Seoul"
     ports:
       - "80:80"
       - "443:443"
