@@ -9,6 +9,7 @@ services:
     command: gunicorn whaling.wsgi:application --bind 0.0.0.0:8000
     environment:
       DJANGO_SETTINGS_MODULE: whaling.settings.prod
+      TZ: "Asia/Seoul"
     env_file:
       - .env
     volumes:
@@ -31,6 +32,7 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=devlopment
+      - TZ: "Asia/Seoul"
     expose:
       - 3000
     stdin_open: true
@@ -43,6 +45,8 @@ services:
       - static:/home/app/web/static
       - media:/home/app/web/media
       - ./frontend:/root
+    environment:
+      - TZ: "Asia/Seoul"
     ports:
       - "80:80"
       - "443:443"
