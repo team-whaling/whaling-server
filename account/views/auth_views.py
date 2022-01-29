@@ -5,18 +5,18 @@ import requests
 from datetime import datetime
 from django.contrib.auth import get_user_model
 from rest_framework import status
-from rest_framework.decorators import permission_classes, api_view
+from rest_framework.decorators import permission_classes, api_view, action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.viewsets import ViewSet
+from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.serializers import TokenVerifySerializer
-from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.views import TokenViewBase
 
 from whaling.settings import env
 
-from account.serializers import UserAuthSerializer
+from account.serializers import UserAuthSerializer, RefreshTokenSerializer
 
 User = get_user_model()
 
@@ -103,10 +103,12 @@ def kakao_login(request):
     return Response(response, status=http_status)
 
 
-class TokenVerifyView(TokenViewBase):
-    serializer_class = TokenVerifySerializer
+class TokenViewSet(ViewSet):
+    permission_classes = [AllowAny]
+    authentication_classes = []
 
-    def post(self, request, *args, **kwargs):
+    @action(methods=['post'], detail=False)
+    def verify(self, request):
         jwt = JWTAuthentication()
         header = jwt.get_header(request)
         if header is None:
@@ -114,10 +116,18 @@ class TokenVerifyView(TokenViewBase):
         data = {
             'token': str(jwt.get_raw_token(header), 'utf-8')
         }
-        serializer = self.get_serializer(data=data)
+        serializer = TokenVerifySerializer(data=data)
         try:
             serializer.is_valid(raise_exception=True)
         except:
-            return Response({'message': '만료된 혹은 유효하지 않은 토큰입니다.'}, status=status.HTTP_401_UNAUTHORIZED)
-
+            return Response({'message': '만료된 혹은 유효하지 않은 액세스 토큰입니다.'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(status=status.HTTP_200_OK)
+
+    @action(methods=['post'], detail=False)
+    def refresh(self, request):
+        serializer = RefreshTokenSerializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError:
+            return Response({'message': '만료된 혹은 유효하지 않은 리프레시 토큰입니다.'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)

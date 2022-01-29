@@ -1,7 +1,6 @@
-from email._header_value_parser import get_address
-
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
@@ -25,3 +24,15 @@ class UserSerializer(serializers.ModelSerializer):
             'profile_img',
             'is_default_profile'
         ]
+
+
+class RefreshTokenSerializer(serializers.Serializer):
+    refresh_token = serializers.CharField()
+    access_token = serializers.CharField(read_only=True)
+
+    def validate(self, attrs):
+        refresh_token = RefreshToken(attrs['refresh_token'])
+        data = {
+            'access_token': str(refresh_token.access_token)
+        }
+        return data
