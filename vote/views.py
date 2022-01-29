@@ -10,11 +10,11 @@ from vote.serializers import VoteCreateSerializer, VoteListSerializer, VoteDetai
 
 
 class VoteViewSet(viewsets.GenericViewSet):
-    queryset = Vote.objects.exclude(state=Vote.StateOfVote.TRACKED)
+    queryset = Vote.objects.all()
     serializer_class = VoteCreateSerializer
 
     def get_filtered_queryset(self, params):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset().exclude(state=Vote.StateOfVote.TRACKED)
         state = params.get('state', None)
         sort = params.get('sort', None)
         coin = params.get('coin', None)
@@ -28,7 +28,7 @@ class VoteViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         queryset = self.get_filtered_queryset(request.query_params)
-        serializer = VoteListSerializer(
+        serializer = VoteDetailSerializer(
             queryset,
             many=True,
             context={'user': request.user}
