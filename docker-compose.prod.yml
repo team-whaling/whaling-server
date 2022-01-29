@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile.prod
     command: gunicorn whaling.wsgi:application --bind 0.0.0.0:8000
     environment:
-      - TZ=Asia/Seoul
       DJANGO_SETTINGS_MODULE: whaling.settings.prod
+        - TZ=Asia/Seoul
     env_file:
       - .env
     volumes:
