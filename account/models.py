@@ -1,13 +1,24 @@
+import pytz
+from datetime import datetime
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
 
+# 현재 시각을 반환하는 함수
+def get_current_time():
+    return datetime.now(pytz.timezone('Asia/Seoul')).replace(tzinfo=None)
+
+
 class TimeStampedModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(default=get_current_time)
+    updated_at = models.DateTimeField(default=get_current_time)
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        self.updated_at = get_current_time()
+        super().save(*args, **kwargs)
 
 
 class UserManager(BaseUserManager):
