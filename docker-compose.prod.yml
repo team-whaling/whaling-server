@@ -29,7 +29,6 @@ services:
     command: sh -c "npm run build && npm run start"
     volumes:
       - ./frontend/:/app
-      - /app/node_modules
     environment:
       - TZ=Asia/Seoul
       - NODE_ENV=devlopment
