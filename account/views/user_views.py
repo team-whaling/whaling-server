@@ -1,11 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Q
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from account.serializers import UserSerializer
-from vote.serializers import vote_serializers
+from vote.serializers import VoteSerializer
 from vote.models import Vote
 
 User = get_user_model()
@@ -23,28 +22,34 @@ class UserViewSet(viewsets.ViewSet):
         serializer.save()
         return Response(status=status.HTTP_200_OK)
 
+    def list_my_page_votes(self, queryset, request):
+        params = request.query_params
+        ongoing_votes = queryset.filter(state=Vote.StateOfVote.ONGOING)
+        finished_votes = queryset.exclude(state=Vote.StateOfVote.ONGOING)
+
+        # 파라미터에 따라 상태별 투표 목록 필터링
+        state = params.get('state', None)
+        if state == Vote.StateOfVote.ONGOING:
+            queryset = ongoing_votes
+        elif state == Vote.StateOfVote.FINISHED:
+            queryset = finished_votes
+
+        serializer = VoteSerializer(queryset, many=True, context={'user': request.user})
+        data = {
+            'ongoing_count': ongoing_votes.count(),
+            'finished_count': finished_votes.count(),
+            'votes': serializer.data
+        }
+        return data
+
     @action(methods=['get'], detail=False, url_path='created-votes')
     def created_votes(self, request):
         queryset = request.user.created_votes.all()
-        ongoing_count = queryset.filter(state=Vote.StateOfVote.ONGOING).count()
-        finished_count = queryset.filter(Q(state=Vote.StateOfVote.FINISHED) | Q(state=Vote.StateOfVote.TRACKED)).count()
-        serializer = vote_serializers.MyPageVoteSerializer(queryset, many=True)
-        data = {
-            'ongoing_count': ongoing_count,
-            'finished_count': finished_count,
-            'votes': serializer.data
-        }
+        data = self.list_my_page_votes(queryset, request)
         return Response(data, status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=False, url_path='participated-votes')
     def participated_votes(self, request):
         queryset = request.user.participated_votes.all()
-        ongoing_count = queryset.filter(state=Vote.StateOfVote.ONGOING).count()
-        finished_count = queryset.filter(Q(state=Vote.StateOfVote.FINISHED) | Q(state=Vote.StateOfVote.TRACKED)).count()
-        serializer = vote_serializers.MyPageVoteSerializer(queryset, many=True)
-        data = {
-            'ongoing_count': ongoing_count,
-            'finished_count': finished_count,
-            'votes': serializer.data
-        }
+        data = self.list_my_page_votes(queryset, request)
         return Response(data, status=status.HTTP_200_OK)

@@ -1,11 +1,11 @@
 import requests
-import pytz
-from datetime import datetime, timedelta
+from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from rest_framework import serializers
 
+from account.models import get_current_time
 from vote.models import Vote, Coin, Choice
-from vote.serializers.coin_serializers import CoinSerializer
+from vote.serializers import CoinSerializer
 from whaling.settings import env
 
 
@@ -17,54 +17,8 @@ def get_coin_cur_price(ticker):
     return response[0]['cur_price']
 
 
-# 현재 시각을 반환하는 함수
-def get_current_time():
-    return datetime.now(pytz.timezone('Asia/Seoul')).replace(tzinfo=None, microsecond=0, second=0)
-
-
-# 전체 투표 목록 조회
-class VoteListSerializer(serializers.ModelSerializer):
-    coin = CoinSerializer()
-
-    class Meta:
-        model = Vote
-        fields = [
-            'vote_id',
-            'coin',
-            'participants',
-            'state',
-            'created_at',
-            'finished_at',
-            'earned_point',
-            'duration',
-            'range',
-            'comment',
-            'total_participants',
-        ]
-
-    def to_representation(self, instance):
-        # 응답 데이터에 현재 로그인 유저의 정보(투표 참여 여부) 추가
-        data = super().to_representation(instance)
-        user_id = self.context['user'].user_id
-        participants = data.pop('participants')
-        voted = (user_id in participants)
-        data['user'] = {
-            'voted': voted
-        }
-        return data
-
-
-# 유저 마이페이지의 투표(생성한 투표/참가한 투표) 목록 조회
-class MyPageVoteSerializer(VoteListSerializer):
-    def to_representation(self, instance):
-        # 응답 데이터에서 참가자 목록 제외
-        data = serializers.ModelSerializer.to_representation(self, instance)
-        data.pop('participants')
-        return data
-
-
 # 투표 상세 정보 조회
-class VoteDetailSerializer(serializers.ModelSerializer):
+class VoteSerializer(serializers.ModelSerializer):
     coin = CoinSerializer()
     is_admin_vote = serializers.SerializerMethodField(label='운영자 투표 여부', read_only=True,
                                                       method_name='get_admin_vote')
@@ -85,11 +39,13 @@ class VoteDetailSerializer(serializers.ModelSerializer):
             choice_obj = Choice.objects.get(vote_id=vote_id, participant_id=user_id)
             choice = choice_obj.choice
             is_answer = choice_obj.is_answer
+            participated_at = choice_obj.created_at
         except Choice.DoesNotExist:
-            choice = is_answer = None
+            choice = is_answer = participated_at = None
         data['user'] = {
             'choice': choice,
-            'is_answer': is_answer
+            'is_answer': is_answer,
+            'participated_at': participated_at
         }
         return data
 
@@ -127,7 +83,7 @@ class VoteCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # 투표 종료 시점, 트래킹 시점 설정
-        current_time = get_current_time()
+        current_time = get_current_time().replace(microsecond=0, second=0)
         if validated_data['duration'] == Vote.DurationOfQuestion.DAY:
             delta_finish = timedelta(hours=8)
             delta_track = timedelta(days=1)

@@ -23,6 +23,8 @@ services:
 
   react:
     container_name: react
+    user: node
+    privileged: true
     build:
       context: ./frontend
       dockerfile: Dockerfile
