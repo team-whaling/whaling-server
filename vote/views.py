@@ -5,8 +5,7 @@ from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 
 from vote.models import Vote, Coin
-from vote.serializers import VoteCreateSerializer, VoteListSerializer, VoteDetailSerializer, ChoiceSerializer, \
-    CoinSerializer
+from vote.serializers import VoteCreateSerializer, VoteSerializer, ChoiceSerializer, CoinSerializer
 
 
 class VoteViewSet(viewsets.GenericViewSet):
@@ -21,14 +20,14 @@ class VoteViewSet(viewsets.GenericViewSet):
         if state in Vote.StateOfVote:
             queryset = queryset.filter(state=state)
         if sort == 'popular':
-            queryset = queryset.order_by('-total_participants')
+            queryset = queryset.order_by('-total_participants', '-created_at')
         if coin is not None:
             queryset = queryset.filter(Q(coin__code__icontains=coin) | Q(coin__krname__icontains=coin))
         return queryset
 
     def list(self, request):
         queryset = self.get_filtered_queryset(request.query_params)
-        serializer = VoteDetailSerializer(
+        serializer = VoteSerializer(
             queryset,
             many=True,
             context={'user': request.user}
@@ -38,7 +37,7 @@ class VoteViewSet(viewsets.GenericViewSet):
     def retrieve(self, request, pk=None):
         queryset = self.get_queryset()
         vote = get_object_or_404(queryset, pk=pk)
-        serializer = VoteDetailSerializer(vote, context={'user': request.user})
+        serializer = VoteSerializer(vote, context={'user': request.user})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):

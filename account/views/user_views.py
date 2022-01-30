@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from account.serializers import UserSerializer
-from vote.serializers import vote_serializers
+from vote.serializers import VoteSerializer
 from vote.models import Vote
 
 User = get_user_model()
@@ -22,7 +22,8 @@ class UserViewSet(viewsets.ViewSet):
         serializer.save()
         return Response(status=status.HTTP_200_OK)
 
-    def list_my_page_votes(self, queryset, params):
+    def list_my_page_votes(self, queryset, request):
+        params = request.query_params
         ongoing_votes = queryset.filter(state=Vote.StateOfVote.ONGOING)
         finished_votes = queryset.exclude(state=Vote.StateOfVote.ONGOING)
 
@@ -33,7 +34,7 @@ class UserViewSet(viewsets.ViewSet):
         elif state == Vote.StateOfVote.FINISHED:
             queryset = finished_votes
 
-        serializer = vote_serializers.MyPageVoteSerializer(queryset, many=True)
+        serializer = VoteSerializer(queryset, many=True, context={'user': request.user})
         data = {
             'ongoing_count': ongoing_votes.count(),
             'finished_count': finished_votes.count(),
@@ -44,11 +45,11 @@ class UserViewSet(viewsets.ViewSet):
     @action(methods=['get'], detail=False, url_path='created-votes')
     def created_votes(self, request):
         queryset = request.user.created_votes.all()
-        data = self.list_my_page_votes(queryset, request.query_params)
+        data = self.list_my_page_votes(queryset, request)
         return Response(data, status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=False, url_path='participated-votes')
     def participated_votes(self, request):
         queryset = request.user.participated_votes.all()
-        data = self.list_my_page_votes(queryset, request.query_params)
+        data = self.list_my_page_votes(queryset, request)
         return Response(data, status=status.HTTP_200_OK)

@@ -1,11 +1,9 @@
 import json
 import requests
 from django.contrib.auth import get_user_model
-from rest_framework import status
+from rest_framework import status, permissions, viewsets
 from rest_framework.decorators import permission_classes, api_view, action
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.viewsets import ViewSet
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.serializers import TokenVerifySerializer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -30,7 +28,7 @@ def get_tokens_for_user(user):
 
 # 소셜 로그인 및 회원가입 뷰
 @api_view(['POST'])
-@permission_classes([AllowAny])
+@permission_classes([permissions.AllowAny])
 def kakao_login(request):
     # 액세스 토큰 발급용 Request
     request_body = json.loads(request.body)
@@ -97,8 +95,8 @@ def kakao_login(request):
     return Response(response, status=http_status)
 
 
-class TokenViewSet(ViewSet):
-    permission_classes = [AllowAny]
+class TokenViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
     @action(methods=['post'], detail=False)
