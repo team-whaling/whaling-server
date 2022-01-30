@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from account.views import UserViewSet, kakao_login, TokenViewSet
 
-router = DefaultRouter(trailing_slash=False)
+router = DefaultRouter()
 router.register(r'user', UserViewSet, basename='user')
 router.register(r'auth/token', TokenViewSet, basename='token')
 
