@@ -1,9 +1,8 @@
-from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status, filters, permissions
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-
 from vote.models import Vote, Coin
 from vote.serializers import VoteCreateSerializer, VoteSerializer, ChoiceSerializer, CoinSerializer
 
@@ -60,8 +59,9 @@ class VoteViewSet(viewsets.GenericViewSet):
 
 @api_view(['GET'])
 def acc_percent_of_whaling(request):
-    total_votes = Vote.objects.all().count()
+    incorrect_votes = Vote.objects.filter(is_answer=False).count()
     correct_votes = Vote.objects.filter(is_answer=True).count()
+    total_votes = incorrect_votes + correct_votes
     acc_percent = (correct_votes / total_votes) * 100
     data = {
         'acc_percent': format(acc_percent, '.1f')
