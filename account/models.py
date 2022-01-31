@@ -22,7 +22,23 @@ class TimeStampedModel(models.Model):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, user_id, password=None, **extra_fields):
+    def create_user(self, user_id, **extra_fields):
+        try:
+            user = self.model(
+                user_id=user_id,
+                **extra_fields
+            )
+            user.set_unusable_password()
+            user.save()
+            return user
+        except Exception as e:
+            print(e)
+
+    def create_superuser(self, user_id, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        if extra_fields.get('is_superuser') is not True or extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True && is_superuser=True')
         try:
             user = self.model(
                 user_id=user_id,
@@ -34,17 +50,9 @@ class UserManager(BaseUserManager):
         except Exception as e:
             print(e)
 
-    def create_superuser(self, user_id, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        if extra_fields.get('is_superuser') is not True or extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True && is_superuser=True')
-        return self.create_user(user_id, password, **extra_fields)
-
 
 class User(AbstractBaseUser, TimeStampedModel, PermissionsMixin):
     user_id = models.BigIntegerField('회원번호', primary_key=True)
-    password = models.CharField('비밀번호', max_length=255, null=True, blank=True)
     nickname = models.CharField('닉네임', max_length=20, unique=True)
     acc_percent = models.FloatField('적중률', default=0.0)
     point = models.IntegerField('고래밥', default=100)
