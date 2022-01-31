@@ -24,4 +24,7 @@ CORS_ALLOW_CREDENTIALS = True
 # CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
 CORS_ALLOW_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = ['https://*.whaling.co.kr']
+CSRF_TRUSTED_ORIGINS = [
+    'https://whaling.co.kr',
+    'https://*.whaling.co.kr',
+]
