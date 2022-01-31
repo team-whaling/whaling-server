@@ -44,10 +44,11 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, TimeStampedModel, PermissionsMixin):
     user_id = models.BigIntegerField('회원번호', primary_key=True)
+    password = models.CharField('비밀번호', max_length=255, null=True, blank=True)
     nickname = models.CharField('닉네임', max_length=20, unique=True)
     acc_percent = models.FloatField('적중률', default=0.0)
     point = models.IntegerField('고래밥', default=100)
-    profile_img = models.URLField('프로필 url', null=True)
+    profile_img = models.URLField('프로필 url', null=True, blank=True)
     is_default_profile = models.BooleanField('기본 프로필 여부', default=True)
 
     is_active = models.BooleanField(default=True)
