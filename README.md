@@ -7,7 +7,7 @@
 ### Infra
 
 |Docker|Github Actions|
-|---|---|
+|:---:|:---:|
 |<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/30f0f63b-c694-4b32-b2d8-7ab2468a9374/docker.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T150641Z&X-Amz-Expires=86400&X-Amz-Signature=9f741701b635150719440df58d6e639fdde4861002f68f87933027f76f7636e3&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22docker.png%22&x-id=GetObject" height="50px"  title= "Docker"/></p>|<p align="center"><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d2889d0c-ea77-4846-9a72-c615f9b43101/githubactions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220131%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220131T142427Z&X-Amz-Expires=86400&X-Amz-Signature=b52695b566c970471024a6ceebc5ba4c7888b9d260b1328972c4d04b5dde1a47&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22githubactions.png%22&x-id=GetObject" height="50px"  title= "Github Actions"/></p>
 
 ### DataBase
