@@ -72,8 +72,8 @@ class VoteCreateSerializer(serializers.ModelSerializer):
         except Coin.DoesNotExist:
             raise serializers.ValidationError({'coin_code': '지원하지 않는 코인입니다.'})
 
-        if data['range'] <= 0:
-            raise serializers.ValidationError({'range': '예상 변동폭이 양수가 아닙니다.'})
+        if data['range'] <= 0 or data['range'] > 300:
+            raise serializers.ValidationError({'range': '예상 변동폭이 생성 가능한 범위를 초과했습니다.'})
 
         user = self.context['request'].user
         if not user.is_staff and user.point < 50:
