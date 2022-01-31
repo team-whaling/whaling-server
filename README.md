@@ -1,7 +1,6 @@
 # Whaling Server
----
+
 ## 소개
----
 **[웨일링 홈페이지(Whaling)](https://whaling.co.kr)**
 
 가상화폐 투표 서비스 웨일링의 Backend Server Repository입니다.
@@ -9,7 +8,7 @@
 가상화폐 시세 기준 :  [Upbit](https://upbit.com/home)
 
 ## 기술 스택
----
+
 ### Infra
 
 |Docker|Github Actions|
@@ -35,13 +34,13 @@
 |<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/aa576cba-e5b9-4851-b852-6e3c17b3e833/pngwing.com.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T150811Z&X-Amz-Expires=86400&X-Amz-Signature=9703d4590d101a7055eb16c4bdf1ef00787c98e208e4a3d1d9527e42aa3ea838&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22pngwing.com.png%22&x-id=GetObject" width="50px"  title="gunicorn" />|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/7eeac880-db91-4344-9d0e-9813f58189ea/redis_plain_wordmark_logo_icon_146367.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T150821Z&X-Amz-Expires=86400&X-Amz-Signature=2aa58fc0812a51cf3ee17432e21592b5dd7c5d6ba4f61c609ef5f6383a90817c&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22redis_plain_wordmark_logo_icon_146367.png%22&x-id=GetObject" width="50px"  title="gunicorn" />|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/3775bfa6-7637-43ab-b9b3-876adbfd85bd/upbit.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T151416Z&X-Amz-Expires=86400&X-Amz-Signature=50fa3ccda61aecca3011c98ab0b56692be8b4c6414999199fa3d54eff0bbc7c2&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22upbit.svg%22&x-id=GetObject" width="50px"  title="Upbit" />
 
 ## Feature
----
+
 ### API
----
+
 추후 업뎃 예정
 
 ## Developer
----
+
 |&nbsp;|정환우|권민아|
 |:---:|:---:|:---:|
 |역|코인 서버 구축</br>트래킹 기능 구현</br> 도메인 서버 배포|소셜 로그인</br>메인 서버 구축</br>API 서버 담당|
