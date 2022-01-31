@@ -36,13 +36,13 @@
 ## Feature
 
 ### API
-
+---
 추후 업뎃 예정
 
 ## Developer
 
 |&nbsp;|정환우|권민아|
 |:---:|:---:|:---:|
-|역|코인 서버 구축</br>트래킹 기능 구현</br> 도메인 서버 배포|소셜 로그인</br>메인 서버 구축</br>API 서버 담당|
+|역할|코인 서버 구축</br>트래킹 기능 구현</br> 도메인 서버 배포|소셜 로그인</br>메인 서버 구축</br>API 서버 담당|
 |Profile|Github Link: [sossont](https://github.com/sossont)| Github Link : [mingulmangul](https://github.com/mingulmangul)
 
