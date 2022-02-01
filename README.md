@@ -1,10 +1,7 @@
 # Whaling Server
 
----
-
 ## 소개
 
----
 **[웨일링 홈페이지(Whaling)](https://whaling.co.kr)**
 
 가상화폐 투표 서비스 웨일링의 Backend Server Repository입니다.
@@ -12,8 +9,6 @@
 가상화폐 시세 기준 :  [Upbit](https://upbit.com/home)
 
 ## 기술 스택
-
----
 
 ### Infra
 
@@ -41,19 +36,13 @@
 
 ## Feature
 
----
-
 ### API
 
----
 추후 업뎃 예정
 
 ## Developer
 
----
-
 |&nbsp;|정환우|권민아|
 |:---:|:---:|:---:|
-|역|코인 서버 구축</br>트래킹 기능 구현</br> 도메인 서버 배포|소셜 로그인</br>메인 서버 구축</br>API 서버 담당|
+|역할|코인 서버 구축</br>트래킹 기능 구현</br> 도메인 서버 배포|소셜 로그인</br>메인 서버 구축</br>API 서버 담당|
 |Profile|Github Link: [sossont](https://github.com/sossont)| Github Link : [mingulmangul](https://github.com/mingulmangul)
-
