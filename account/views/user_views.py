@@ -15,6 +15,15 @@ class UserViewSet(viewsets.ViewSet):
         serializer = UserSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @action(methods=['post'], detail=False, url_path='nickname/check')
+    def nickname_check(self, request):
+        serializer = UserSerializer(request.user, data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except:
+            return Response({"nickname": "이미 존재하는 닉네임입니다."}, status=status.HTTP_409_CONFLICT)
+        return Response(status=status.HTTP_200_OK)
+
     @action(methods=['patch'], detail=False)
     def nickname(self, request):
         serializer = UserSerializer(request.user, data=request.data)

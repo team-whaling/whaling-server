@@ -82,10 +82,6 @@ TEMPLATES = [
     },
 ]
 
-CSRF_COOKIE_SECURE = False
-CSRF_TRUSTED_ORIGINS = ['https://*.whaling.co.kr']
-SESSION_COOKIE_SECURE = False
-
 WSGI_APPLICATION = 'whaling.wsgi.application'
 
 # Password validation
@@ -99,8 +95,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -158,3 +153,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+APPEND_SLASH = False

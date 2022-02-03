@@ -14,5 +14,17 @@ DATABASES = {
     }
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'https://whaling.co.kr',
+    'https://*.whaling.co.kr',
+    'http://localhost:3000',
+    'http://127.0.0.1:8000',
+]
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+
+# CORS_ALLOW_ALL_ORIGINS = True
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://whaling.co.kr',
+#     'https://*.whaling.co.kr',
+# ]
