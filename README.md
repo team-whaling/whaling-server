@@ -1,5 +1,7 @@
 # Whaling Server
 
+<img src = "./images/whaling.png" title="Whaling 화면"/>
+
 ## 소개
 
 **[웨일링 홈페이지(Whaling)](https://whaling.co.kr)**
@@ -51,7 +53,7 @@ EC2 프리 티어를 사용하여 CPU 성능이 좋지 않아 유저 트래픽�
 
 ### API
 
-추후 업뎃 예정
+[웨일링 API 링크](https://documenter.getpostman.com/view/18244416/UVXqDXg3)
 
 ## Developer
 
