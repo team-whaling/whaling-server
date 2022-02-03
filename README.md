@@ -1,8 +1,6 @@
 # Whaling Server
 
-<img src = "./images/whaling.png" title="Whaling 화면"/>
-
-## 소개
+<img src="./images/whaling.png" title="Whaling 화면"/>
 
 **[웨일링 홈페이지(Whaling)](https://whaling.co.kr)**
 
@@ -36,24 +34,58 @@
 |---|---|---|
 |<img src="./images/celery.png" width="50px"  title="Celery" />|<img src="./images/redis.png" width="50px"  title="Redis" />|<img src="./images/upbit.svg" width="50px"  title="Upbit" />
 
-## Feature
+# Feature
 
-### Tracking / Update
+## API
+
+---
+
+[웨일링 API 링크](https://documenter.getpostman.com/view/18244416/UVXqDXg3)
+
+### User
+
+- 카카오톡 로그인 / 회원가입 / 토큰 검증
+- 닉네임 중복 체크 / 변경
+- 생성한 투표 목록 조회
+- 참여한 투표 목록 조회
+
+### Votes
+
+- 투표 생성 / 참여
+- 전체 투표 목록 조회
+- 투표 상세 조회
+- 서비스 전체 적중률 조회
+
+### Coin
+
+- 전체 코인 목록 조회
+
+## Tracking / Update
 
 Coin Update / Tracking Server Repository : [whaling-coin-server](https://github.com/team-whaling/whaling-coin-server)
 <br/>
 <br/>
-**서버를 2개 둔 이유**
+
+### 코인 트래킹 서버를 따 둔 이유
+
 <br/>
 
-EC2 프리 티어를 사용하여 CPU 성능이 좋지 않아 유저 트래픽과 트래킹을 동시에 감당하기에는 부담이 있었습니다. <br/>
-그래서 코인 가격 업데이트 서버에서 메인 서버 데이터베이스에 접근하여 트래킹 및 투표 결과 업데이트까지 담당하도록 하였습니다. <br/>
-이렇게 서버를 2개 구축한다면 결과가 업데이트가 되지 않는 버그가 발생하더라도 사이트 자체가 다운되지는 않기 때문에 유저 입장에서는 체감하기 힘들게 하는 것이 서비스에 좋을 것이라 판단하였습니다. <br/>
-자세한 동작 방식은 레포지토리에 정리하였습니다.
+- EC2 프리티어가 트래픽과 트래킹을 동시에 수행하기에 성능 문제가 발생할 수 있다.
+- 트래킹 서버가 다운이 되더라도 웹 페이지 접속은 될 수 있도록 한다.
 
-### API
+### 트래킹 서버에서 수행하는 것
 
-[웨일링 API 링크](https://documenter.getpostman.com/view/18244416/UVXqDXg3)
+- 코인 가격 / 이미지를 API로 넘겨준다.
+- 투표 마감 기한 / 트래킹 기한에 따라서 투표 정보를 업데이트
+- 정답 여부에 따라서 유저에게 고래밥 지급
+- 투표 결과에 따라서 전체 적중률 / 유저 적중률 수정
+
+# 회고
+
+## 아쉬운 점
+
+- 트래킹 서버를 따로 설계할 때, nginx를 굳이 사용하지 않아도 되는데 잘못 설게하여 nginx를 사용해서 API를 따로 만들었다. 처음부터 Multi Database를 사용했다면 nginx를 사용하지 않아
+  API를 생성하지 않아도 됐을 것이라는 생각. 한 번에 처리할 수 있는 것을 두번에 나눠 처리하는 것이니까
 
 ## Developer
 
