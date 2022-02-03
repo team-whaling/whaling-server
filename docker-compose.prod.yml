@@ -8,6 +8,7 @@ services:
       dockerfile: Dockerfile.prod
     command: gunicorn whaling.wsgi:application --bind 0.0.0.0:8000
     environment:
+      TZ: "Asia/Seoul"
       DJANGO_SETTINGS_MODULE: whaling.settings.prod
     env_file:
       - .env
@@ -20,17 +21,40 @@ services:
       - sh
       - config/docker/entrypoint.prod.sh
 
+  react:
+    container_name: react
+    user: node
+    privileged: true
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: sh -c "npm run build && npm run start"
+    volumes:
+      - ./frontend/:/app
+      - /app/node_modules
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=devlopment
+    expose:
+      - 3000
+    stdin_open: true
+    restart: always
+
   nginx:
     container_name: nginx
     build: ./config/nginx
     volumes:
       - static:/home/app/web/static
       - media:/home/app/web/media
+      - ./frontend:/root
+    environment:
+      - TZ=Asia/Seoul
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - web
-
+      - react
 
 volumes:
   static:
