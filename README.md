@@ -1,6 +1,6 @@
 # Whaling Server
 
-## 소개
+<img src="./images/whaling.png" title="Whaling 화면"/>
 
 **[웨일링 홈페이지(Whaling)](https://whaling.co.kr)**
 
@@ -14,44 +14,65 @@
 
 |Docker|Github Actions|
 |:---:|:---:|
-|<img src = "https://www.docker.com/sites/default/files/d8/2019-07/Moby-logo.png" width="50px" title="Docker"/>|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/5e3891d9-f8c5-4e0a-bba0-01a7804a3ed7/44036562.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220131%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220131T144307Z&X-Amz-Expires=86400&X-Amz-Signature=dd3676a8f500ed4ce60eebae2a86ee901b1ee4d9b610988930c912b7def463f6&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%2244036562.png%22&x-id=GetObject" width="50px" title="Github Actions"/>
+|<img src = "./images/docker.png" width="50px" title="Docker"/>|<img src="./images/githubactions.png" width="50px" title="Github Actions"/>
 
 ### DataBase
 
 |MySQL|RDS|S3|
 |---|---|---|
-|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/05d6790c-42bc-4e04-8401-cf7bca77b498/Amazon-RDS_MySQL_instance_light-bg4x.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T145313Z&X-Amz-Expires=86400&X-Amz-Signature=429f9427facffc71c6d038989da9033fa2f8abf81685849a147148c8eb4b8e47&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Amazon-RDS_MySQL_instance_light-bg%25404x.png%22&x-id=GetObject" width="50px"  title= "MySQL"/>|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/74b76f22-b587-42af-b9af-3f3785ce4cdb/Amazon-RDS_Amazon-RDS_instance_light-bg4x.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T145516Z&X-Amz-Expires=86400&X-Amz-Signature=e813299d120ec2e31d321dabe131e4befc228a9e0165cf85fe25b39ca69ae825&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Amazon-RDS_Amazon-RDS_instance_light-bg%25404x.png%22&x-id=GetObject" width="50px"  title="RDS"/>|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/17678404-159b-49d3-9fe2-f0c6701992c7/Amazon-Simple-Storage-Service-S3_Bucket-with-Objects_light-bg4x.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T145600Z&X-Amz-Expires=86400&X-Amz-Signature=b881eb509a98b2f00f995e0dbeb54b8e1b1d0d47a48bdc50942a3c408a360b24&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Amazon-Simple-Storage-Service-S3_Bucket-with-Objects_light-bg%25404x.png%22&x-id=GetObject" width="50px"  title="S3" />
+|<img src="./images/mysql.png" width="50px"  title= "MySQL"/>|<img src="./images/RDS.png" width="50px"  title="RDS"/>|<img src="./images/S3.png" width="50px"  title="S3" />
 
 ### Web Server
 
 |EC2|ELB|Django|Nginx|gunicorn|
 |---|---|---|---|---|
-|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/12d9cdd2-bb95-4a6f-9c78-11fffab1def1/Amazon-EC24x.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T145706Z&X-Amz-Expires=86400&X-Amz-Signature=e83e7f6a3aff5bb8b528f5f169967fbf156266f7f3065284b98c1b77df6f3ae1&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Amazon-EC2%25404x.png%22&x-id=GetObject" width="50px"  title="EC2" />|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/46674649-30fa-4de3-90bd-622784dffa80/Elastic-Load-Balancing-ELB_Application-load-balancer_light-bg4x.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T145752Z&X-Amz-Expires=86400&X-Amz-Signature=d9dde558162d5c45d6454f5cb1e6a2038b71b5cdcb932828d65a7e35a6e3fe9d&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Elastic-Load-Balancing-ELB_Application-load-balancer_light-bg%25404x.png%22&x-id=GetObject" width="50px"  title="ELB" />|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1ffb0fcd-aef1-4f33-afe0-29de68a1bb0b/django_original_logo_icon_146559.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T150314Z&X-Amz-Expires=86400&X-Amz-Signature=d66642ec98dfa1597a5bfa87d82c85173a9d762da2699f4f8f05374c47512bcd&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22django_original_logo_icon_146559.png%22&x-id=GetObject" width="50px"  title="Django" />|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/b7c8a183-f394-4d27-8f2c-1fef602c2945/nginx.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T150338Z&X-Amz-Expires=86400&X-Amz-Signature=d378c2cb7315d743544319229b9ef12888d187be2138154932c78ff21c038697&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22nginx.png%22&x-id=GetObject" width="50px"  title="Nginx" />|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/4604d77c-c032-4556-a015-dcbb1fbad634/gunicorn_logo_icon_170045.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T150410Z&X-Amz-Expires=86400&X-Amz-Signature=ddc96ba6009d44b1e5af1a96cdc9316a8e9d8a4693bc5724af703617c2ddbf0d&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22gunicorn_logo_icon_170045.png%22&x-id=GetObject" width="70px"  title="gunicorn" />
+|<img src="./images/EC2.png" width="50px"  title="EC2" />|<img src="./images/ELB.png" width="50px"  title="ELB" />|<img src="./images/django.png" width="50px"  title="Django" />|<img src="./images/nginx.png" width="50px"  title="Nginx" />|<img src="./images/gunicorn.png" width="70px"  title="gunicorn" />
 
 ### Tracking
 
 |Celery|Redis|Upbit
 |---|---|---|
-|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/aa576cba-e5b9-4851-b852-6e3c17b3e833/pngwing.com.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T150811Z&X-Amz-Expires=86400&X-Amz-Signature=9703d4590d101a7055eb16c4bdf1ef00787c98e208e4a3d1d9527e42aa3ea838&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22pngwing.com.png%22&x-id=GetObject" width="50px"  title="gunicorn" />|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/7eeac880-db91-4344-9d0e-9813f58189ea/redis_plain_wordmark_logo_icon_146367.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T150821Z&X-Amz-Expires=86400&X-Amz-Signature=2aa58fc0812a51cf3ee17432e21592b5dd7c5d6ba4f61c609ef5f6383a90817c&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22redis_plain_wordmark_logo_icon_146367.png%22&x-id=GetObject" width="50px"  title="gunicorn" />|<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/3775bfa6-7637-43ab-b9b3-876adbfd85bd/upbit.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220130T151416Z&X-Amz-Expires=86400&X-Amz-Signature=50fa3ccda61aecca3011c98ab0b56692be8b4c6414999199fa3d54eff0bbc7c2&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22upbit.svg%22&x-id=GetObject" width="50px"  title="Upbit" />
+|<img src="./images/celery.png" width="50px"  title="Celery" />|<img src="./images/redis.png" width="50px"  title="Redis" />|<img src="./images/upbit.svg" width="50px"  title="Upbit" />
 
-## Feature
+# Feature
 
-### Tracking / Update
+## API
+
+[웨일링 API 링크](https://documenter.getpostman.com/view/18244416/UVXqDXg3)
+
+### User
+
+- 카카오톡 로그인 / 회원가입 / 토큰 검증
+- 닉네임 중복 체크 / 변경
+- 생성한 투표 목록 조회
+- 참여한 투표 목록 조회
+
+### Votes
+
+- 투표 생성 / 참여
+- 전체 투표 목록 조회
+- 투표 상세 조회
+- 서비스 전체 적중률 조회
+
+### Coin
+
+- 전체 코인 목록 조회
+
+## Tracking / Update
 
 Coin Update / Tracking Server Repository : [whaling-coin-server](https://github.com/team-whaling/whaling-coin-server)
-<br/>
-<br/>
-**서버를 2개 둔 이유**
-<br/>
 
-EC2 프리 티어를 사용하여 CPU 성능이 좋지 않아 유저 트래픽과 트래킹을 동시에 감당하기에는 부담이 있었습니다. <br/>
-그래서 코인 가격 업데이트 서버에서 메인 서버 데이터베이스에 접근하여 트래킹 및 투표 결과 업데이트까지 담당하도록 하였습니다. <br/>
-이렇게 서버를 2개 구축한다면 결과가 업데이트가 되지 않는 버그가 발생하더라도 사이트 자체가 다운되지는 않기 때문에 유저 입장에서는 체감하기 힘들게 하는 것이 서비스에 좋을 것이라 판단하였습니다. <br/>
-자세한 동작 방식은 레포지토리에 정리하였습니다.
+### 코인 트래킹 서버를 따로 둔 이유
 
-### API
+- EC2 프리티어가 트래픽과 트래킹을 동시에 수행하기에 성능 문제가 발생할 수 있다.
+- 트래킹 서버가 다운이 되더라도 웹 페이지 접속은 될 수 있도록 한다.
 
-추후 업뎃 예정
+### 트래킹 서버에서 수행하는 것
+
+- 코인 가격 / 이미지를 API로 넘겨준다.
+- 투표 마감 기한 / 트래킹 기한에 따라서 투표 정보를 업데이트
+- 정답 여부에 따라서 유저에게 고래밥 지급
+- 투표 결과에 따라서 전체 적중률 / 유저 적중률 수정
 
 ## Developer
 
@@ -59,3 +80,10 @@ EC2 프리 티어를 사용하여 CPU 성능이 좋지 않아 유저 트래픽�
 |:---:|:---:|:---:|
 |역할|코인 서버 구축</br>트래킹 기능 구현</br> 도메인 서버 배포|소셜 로그인</br>메인 서버 구축</br>API 서버 담당|
 |Profile|Github Link: [sossont](https://github.com/sossont)| Github Link : [mingulmangul](https://github.com/mingulmangul)
+
+# 회고
+
+## 아쉬운 점
+
+- 트래킹 서버를 따로 설계할 때, nginx를 굳이 사용하지 않아도 되는데 잘못 설게하여 nginx를 사용해서 API를 따로 만들었다. 처음부터 Multi Database를 사용했다면 nginx를 사용하지 않아
+  API를 생성하지 않아도 됐을 것이라는 생각. 한 번에 처리할 수 있는 것을 두번에 나눠 처리하는 것이니...
