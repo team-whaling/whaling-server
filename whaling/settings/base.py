@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
 import os
+from datetime import timedelta
+
 import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,7 +30,6 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,17 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< HEAD
-
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
-
     'account.apps.AccountConfig',
     'vote.apps.VoteConfig',
-=======
->>>>>>> cb707738ae7074fe4223b5603799aeb3c1cad07f
 ]
 
 MIDDLEWARE = [
@@ -87,7 +82,6 @@ WSGI_APPLICATION = 'whaling.wsgi.application'
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
-<<<<<<< HEAD
 AUTH_USER_MODEL = 'account.User'
 
 REST_FRAMEWORK = {
@@ -112,7 +106,7 @@ SIMPLE_JWT = {
 
     'USER_ID_FIELD': 'user_id',
 }
-=======
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -128,8 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
->>>>>>> cb707738ae7074fe4223b5603799aeb3c1cad07f
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 LANGUAGE_CODE = 'ko-kr'
@@ -141,7 +133,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
