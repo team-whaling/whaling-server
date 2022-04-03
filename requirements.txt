@@ -4,7 +4,6 @@ certifi==2021.10.8
 charset-normalizer==2.0.10
 Django==4.0.1
 django-cors-headers==3.10.1
-Django==4.0
 django-environ==0.8.1
 django-filter==21.1
 djangorestframework==3.13.1
