@@ -51,7 +51,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,7 +79,7 @@ TEMPLATES = [
 ]
 
 CSRF_COOKIE_SECURE = False
-CSRF_TRUSTED_ORIGINS = ['https://*.whaling.co.kr']
+CSRF_TRUSTED_ORIGINS = ['https://*.whaling.kro.kr']
 SESSION_COOKIE_SECURE = False
 
 WSGI_APPLICATION = 'whaling.wsgi.application'
