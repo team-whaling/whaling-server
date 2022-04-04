@@ -1,6 +1,7 @@
 from .base import *
 
 DEBUG = True
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -18,3 +19,8 @@ DATABASES = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    'https://whaling.kro.kr',
+    'https://*.whaling.kro.kr',
+]
