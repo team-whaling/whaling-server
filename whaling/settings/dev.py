@@ -1,6 +1,6 @@
 from .base import *
 
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
 
 # Database
@@ -16,11 +16,3 @@ DATABASES = {
         'PORT': env('DATABASE_PORT'),
     }
 }
-
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = [
-    'https://whaling.kro.kr',
-    'https://*.whaling.kro.kr',
-]
