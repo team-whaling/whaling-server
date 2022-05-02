@@ -30,9 +30,9 @@
 
 ### Tracking
 
-|Celery|Redis|Upbit
+|Celery|RabbitMQ|Upbit
 |---|---|---|
-|<img src="./images/celery.png" width="50px"  title="Celery" />|<img src="./images/redis.png" width="50px"  title="Redis" />|<img src="./images/upbit.svg" width="50px"  title="Upbit" />
+|<img src="./images/celery.png" width="50px"  title="Celery" />|<img src="./images/rabbitmq.png" width="50px"  title="RabbitMQ" />|<img src="./images/upbit.svg" width="50px"  title="Upbit" />
 
 # Feature
 
